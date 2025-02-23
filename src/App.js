@@ -81,4 +81,5 @@ const styles = {
   app: { textAlign: 'center', fontFamily: 'Arial, sans-serif' },
   header: { background: '#0A1633', color: '#F2B705', padding: '1rem' },
   dashboard: { padding: '2rem' },
-  buttonGrid: { display:
+  buttonGrid: { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' },
+
