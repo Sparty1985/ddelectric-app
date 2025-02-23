@@ -82,4 +82,8 @@ const styles = {
   header: { background: '#0A1633', color: '#F2B705', padding: '1rem' },
   dashboard: { padding: '2rem' },
   buttonGrid: { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' },
+  button: { background: '#F2B705', padding: '1rem', borderRadius: '10px', textDecoration: 'none', color: 'black' },
+  weatherBox: { marginTop: '1rem', padding: '1rem', background: '#EEE', borderRadius: '10px' }
+};
 
+export default App;
