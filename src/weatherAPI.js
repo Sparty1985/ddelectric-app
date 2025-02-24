@@ -1,19 +1,18 @@
-const API_KEY = f82af9907368c8dcd3bbd1fff43b3c9c; // Replace with your OpenWeather API key
+import axios from 'axios';
 
-export async function getWeatherData(lat, lon) {
-  try {
-    const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${API_KEY}`
-    );
-    const data = await response.json();
+const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+const BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
 
-    return {
-      city: data.city.name,
-      temp: data.list[0].main.temp,
-      precip: data.list[0].pop * 100, // Precipitation probability in %
-    };
-  } catch (error) {
-    console.error("Error fetching weather data:", error);
-    return null;
-  }
-}
+export const getWeatherData = async (lat, lon) => {
+    try {
+        const response = await axios.get(`${BASE_URL}?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=imperial`);
+        return {
+            city: response.data.name,
+            temp: response.data.main.temp,
+            precip: response.data.weather[0].description,
+        };
+    } catch (error) {
+        console.error("Error fetching weather data:", error);
+        return null;
+    }
+};
