@@ -90,6 +90,7 @@ const employees = [
 
 export default function EquipmentTracker() {
   const [equipment, setEquipment] = useState(initialEquipment);
+  const [viewMode, setViewMode] = useState('list');
 
   const updateEquipment = (id, field, value) => {
     setEquipment((prev) =>
@@ -98,52 +99,62 @@ export default function EquipmentTracker() {
   };
 
   return (
-    <div id="equipment-section" style={styles.container}>
+    <div style={styles.container}>
       <h1 style={styles.header}>Equipment Tracker</h1>
-      <div style={styles.list}>
-        {equipment.map((eq) => (
-          <div key={eq.id} style={styles.card}>
-            <div style={styles.row}>
+      <button onClick={() => setViewMode(viewMode === 'list' ? 'grid' : 'list')} style={styles.toggleButton}>
+        {viewMode === 'list' ? 'Switch to Grid View' : 'Switch to List View'}
+      </button>
+
+      {viewMode === 'list' ? (
+        <div style={styles.list}>
+          {equipment.map((eq) => (
+            <div key={eq.id} style={styles.card}>
               <h2 style={styles.cardTitle}>{eq.name} ({eq.type})</h2>
-              <input
-                type="text"
-                value={eq.notes || ""}
-                onChange={(e) => updateEquipment(eq.id, "notes", e.target.value)}
-                placeholder="Notes"
-                style={styles.notesInput}
-              />
-              <p style={styles.id}>ID: {eq.id}</p>
+              <label>Location:</label>
+              <select value={eq.location} onChange={(e) => updateEquipment(eq.id, "location", e.target.value)} style={styles.select}>
+                {locations.map((loc) => (
+                  <option key={loc} value={loc}>{loc}</option>
+                ))}
+              </select>
+              <label>Assigned To:</label>
+              <select value={eq.assignedTo} onChange={(e) => updateEquipment(eq.id, "assignedTo", e.target.value)} style={styles.select}>
+                <option value="">Unassigned</option>
+                {employees.map((emp) => (
+                  <option key={emp} value={emp}>{emp}</option>
+                ))}
+              </select>
+              <label>Notes:</label>
+              <textarea value={eq.notes} onChange={(e) => updateEquipment(eq.id, "notes", e.target.value)} style={styles.textarea} />
             </div>
-
-            <label>Location:</label>
-            <select
-              value={eq.location}
-              onChange={(e) => updateEquipment(eq.id, "location", e.target.value)}
-              style={styles.select}
-            >
-              {locations.map((loc) => (
-                <option key={loc} value={loc}>{loc}</option>
-              ))}
-            </select>
-
-            <label>Assigned To:</label>
-            <select
-              value={eq.assignedTo}
-              onChange={(e) => updateEquipment(eq.id, "assignedTo", e.target.value)}
-              style={styles.select}
-            >
-              <option value="">Unassigned</option>
-              {employees.map((emp) => (
-                <option key={emp} value={emp}>{emp}</option>
-              ))}
-            </select>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <table style={styles.table}>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Description</th>
+              <th>Location</th>
+              <th>Assigned</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {equipment.map((eq) => (
+              <tr key={eq.id}>
+                <td>{eq.id}</td>
+                <td>{eq.name} ({eq.type})</td>
+                <td>{eq.location}</td>
+                <td>{eq.assignedTo || 'Unassigned'}</td>
+                <td>{eq.notes}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }
-
 
 // Styles optimized for mobile readability
 const styles = {
