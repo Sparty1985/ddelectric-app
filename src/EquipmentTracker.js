@@ -1,63 +1,63 @@
 import React, { useState } from 'react';
 
   const initialEquipment = [
-  { id: "DT2", name: "Dump Trailer", type: "Trailer", location: "Shop", assignedTo: "" },
-  { id: "DC1", name: "LPX210", type: "Trailer", location: "Shop", assignedTo: "" },
-  { id: "DC2", name: "Tilt Deck", type: "Trailer", location: "1407 Warehouse", assignedTo: "" },
-  { id: "DC3", name: "Tilt Deck", type: "Trailer", location: "Shop", assignedTo: "" },
-  { id: "DW1", name: "Pole Trailer", type: "Trailer", location: "Shop", assignedTo: "" },
-  { id: "FT1", name: "Pintle Deckover", type: "Trailer", location: "Shop", assignedTo: "" },
-  { id: "FT2", name: "Wallace Flatbed", type: "Trailer", location: "Inactive", assignedTo: "" },
-  { id: "LB1", name: "RGN Lowboy", type: "Trailer", location: "Shop", assignedTo: "" },
-  { id: "TR1", name: "Atlas Box Trailer", type: "Trailer", location: "Shop", assignedTo: "" },
-  { id: "TR2", name: "Doo Box Trailer", type: "Trailer", location: "Mine Property", assignedTo: "" },
-  { id: "TR3", name: "Orange Deckover", type: "Trailer", location: "Shop", assignedTo: "" },
-  { id: "TR4", name: "8.5X24CH-7000", type: "Trailer", location: "Shop", assignedTo: "" },
-  { id: "TR5", name: "SM714TA22", type: "Trailer", location: "Unknown", assignedTo: "" },
-  { id: "TR6", name: "JV7X14TE2", type: "Trailer", location: "Warehouse", assignedTo: "" },
-  { id: "VT1", name: "VX50-800", type: "Trailer", location: "Shop", assignedTo: "" },
-  { id: "DT1", name: "Dump Trailer", type: "Trailer", location: "Shop", assignedTo: "" },
-  { id: "TR7", name: "XLSE Gray Cargo", type: "Trailer", location: "Shop", assignedTo: "" },
-  { id: "RT13", name: "I-85 Reel Trailer", type: "Trailer", location: "Shop", assignedTo: "" },
-  { id: "AT01", name: "KAF400-A UTV", type: "Powered", location: "Unknown", assignedTo: "" },
-  { id: "DE01", name: "800A Boom Lift", type: "Powered", location: "Shop", assignedTo: "" },
-  { id: "DE02", name: "MLT3060KV Light Tower", type: "Trailer", location: "Belleville", assignedTo: "" },
-  { id: "DE03", name: "GTH-636 Telehandler", type: "Powered", location: "Shop", assignedTo: "" },
-  { id: "DE04", name: "TX427 Mini Compact Track Loader", type: "Powered", location: "Shop", assignedTo: "" },
-  { id: "DE05", name: "MP25-8E1 Generator", type: "Powered", location: "Shop", assignedTo: "" },
-  { id: "DA01", name: "D4H3 Harley Rake", type: "Powered", location: "Shop", assignedTo: "" },
-  { id: "DE06", name: "PD10 Pile Driver", type: "Powered", location: "Shop", assignedTo: "" },
-  { id: "DE07", name: "Concrete Mixer", type: "Powered", location: "Unknown", assignedTo: "" },
-  { id: "AT02", name: "KAF820 Side X Side UTV", type: "Powered", location: "Unknown", assignedTo: "" },
-  { id: "DE08", name: "SV40 Mini Excavator", type: "Powered", location: "Unknown", assignedTo: "" },
-  { id: "DE09", name: "ViO25 Mini Excavator", type: "Powered", location: "Unknown", assignedTo: "" },
-  { id: "PU4", name: "F150", type: "Vehicle", location: "Shop", assignedTo: "Nathan Sumner" },
-  { id: "PU5", name: "F150", type: "Vehicle", location: "Shop", assignedTo: "Tommy Reyling" },
-  { id: "PU6", name: "Canyon", type: "Vehicle", location: "Shop", assignedTo: "Spare ELD" },
-  { id: "PU7", name: "Silverado", type: "Vehicle", location: "Shop", assignedTo: "James Horseman" },
-  { id: "PU10", name: "Silverado", type: "Vehicle", location: "Unknown", assignedTo: "Davy Martin" },
-  { id: "PU11", name: "Silverado", type: "Vehicle", location: "Unknown", assignedTo: "Unknown" },
-  { id: "PU13", name: "F250", type: "Vehicle", location: "Unknown", assignedTo: "Brandon Norris" },
-  { id: "PU14", name: "F150", type: "Vehicle", location: "Unknown", assignedTo: "Spare HBG" },
-  { id: "PU15", name: "F150", type: "Vehicle", location: "Unknown", assignedTo: "ESG" },
-  { id: "PU16", name: "Sierra 3500", type: "Vehicle", location: "Unknown", assignedTo: "Kevin Rice" },
-  { id: "PU17", name: "Sierra 3500", type: "Vehicle", location: "Unknown", assignedTo: "Jacob Blackman" },
-  { id: "PU18", name: "Sierra 3500", type: "Vehicle", location: "Unknown", assignedTo: "Michael Rogers" },
-  { id: "PU19", name: "Sierra 3500", type: "Vehicle", location: "Unknown", assignedTo: "Ryan Heady" },
-  { id: "PU20", name: "Sierra 3500", type: "Vehicle", location: "Unknown", assignedTo: "Doug Uhls" },
-  { id: "PU21", name: "F150", type: "Vehicle", location: "Unknown", assignedTo: "Dave Martin" },
-  { id: "PV1", name: "E350 Van", type: "Vehicle", location: "Unknown", assignedTo: "Eldorado" },
-  { id: "TT1", name: "Semi Tractor", type: "CMV", location: "Unknown", assignedTo: "" },
-  { id: "TT2", name: "Semi Tractor", type: "CMV", location: "Unknown", assignedTo: "" },
-  { id: "ST2", name: "Silverado", type: "Vehicle", location: "Unknown", assignedTo: "Shop Truck" },
-  { id: "ST3", name: "F350 Van", type: "Vehicle", location: "Unknown", assignedTo: "" },
-  { id: "ST4", name: "Ram 4500", type: "Vehicle", location: "Unknown", assignedTo: "Steve McGhee-old" },
-  { id: "ST5", name: "Ram 2500", type: "Vehicle", location: "Unknown", assignedTo: "" },
-  { id: "ST6", name: "Ram 5500", type: "Vehicle", location: "Unknown", assignedTo: "" },
-  { id: "ST7", name: "Silverado", type: "Vehicle", location: "Unknown", assignedTo: "" },
-  { id: "ST8", name: "Ram 3500", type: "Vehicle", location: "Unknown", assignedTo: "" },
-  { id: "ST9", name: "Sierra 3500", type: "Vehicle", location: "Unknown", assignedTo: "" },
-  { id: "ST10", name: "Semi Tractor", type: "CMV", location: "Unknown", assignedTo: "" },
+  { id: "DT2", name: "Dump Trailer", type: "Trailer", location: "Shop", assignedTo: "", notes: "" },
+  { id: "DC1", name: "LPX210", type: "Trailer", location: "Shop", assignedTo: "", notes: "" },
+  { id: "DC2", name: "Tilt Deck", type: "Trailer", location: "1407 Warehouse", assignedTo: "", notes: "" },
+  { id: "DC3", name: "Tilt Deck", type: "Trailer", location: "Shop", assignedTo: "", notes: "" },
+  { id: "DW1", name: "Pole Trailer", type: "Trailer", location: "Shop", assignedTo: "", notes: "" },
+  { id: "FT1", name: "Pintle Deckover", type: "Trailer", location: "Shop", assignedTo: "", notes: "" },
+  { id: "FT2", name: "Wallace Flatbed", type: "Trailer", location: "Inactive", assignedTo: "", notes: "" },
+  { id: "LB1", name: "RGN Lowboy", type: "Trailer", location: "Shop", assignedTo: "", notes: "" },
+  { id: "TR1", name: "Atlas Box Trailer", type: "Trailer", location: "Shop", assignedTo: "", notes: "" },
+  { id: "TR2", name: "Doo Box Trailer", type: "Trailer", location: "Mine Property", assignedTo: "", notes: "" },
+  { id: "TR3", name: "Orange Deckover", type: "Trailer", location: "Shop", assignedTo: "", notes: "" },
+  { id: "TR4", name: "8.5X24CH-7000", type: "Trailer", location: "Shop", assignedTo: "", notes: "" },
+  { id: "TR5", name: "SM714TA22", type: "Trailer", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "TR6", name: "JV7X14TE2", type: "Trailer", location: "Warehouse", assignedTo: "", notes: "" },
+  { id: "VT1", name: "VX50-800", type: "Trailer", location: "Shop", assignedTo: "", notes: "" },
+  { id: "DT1", name: "Dump Trailer", type: "Trailer", location: "Shop", assignedTo: "", notes: "" },
+  { id: "TR7", name: "XLSE Gray Cargo", type: "Trailer", location: "Shop", assignedTo: "", notes: "" },
+  { id: "RT13", name: "I-85 Reel Trailer", type: "Trailer", location: "Shop", assignedTo: "", notes: "" },
+  { id: "AT01", name: "KAF400-A UTV", type: "Powered", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "DE01", name: "800A Boom Lift", type: "Powered", location: "Shop", assignedTo: "", notes: "" },
+  { id: "DE02", name: "MLT3060KV Light Tower", type: "Trailer", location: "Belleville", assignedTo: "", notes: "" },
+  { id: "DE03", name: "GTH-636 Telehandler", type: "Powered", location: "Shop", assignedTo: "", notes: "" },
+  { id: "DE04", name: "TX427 Mini Compact Track Loader", type: "Powered", location: "Shop", assignedTo: "", notes: "" },
+  { id: "DE05", name: "MP25-8E1 Generator", type: "Powered", location: "Shop", assignedTo: "", notes: "" },
+  { id: "DA01", name: "D4H3 Harley Rake", type: "Powered", location: "Shop", assignedTo: "", notes: "" },
+  { id: "DE06", name: "PD10 Pile Driver", type: "Powered", location: "Shop", assignedTo: "", notes: "" },
+  { id: "DE07", name: "Concrete Mixer", type: "Powered", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "AT02", name: "KAF820 Side X Side UTV", type: "Powered", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "DE08", name: "SV40 Mini Excavator", type: "Powered", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "DE09", name: "ViO25 Mini Excavator", type: "Powered", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "PU4", name: "F150", type: "Vehicle", location: "Shop", assignedTo: "Nathan Sumner", notes: "" },
+  { id: "PU5", name: "F150", type: "Vehicle", location: "Shop", assignedTo: "Tommy Reyling", notes: "" },
+  { id: "PU6", name: "Canyon", type: "Vehicle", location: "Shop", assignedTo: "Spare ELD", notes: "" },
+  { id: "PU7", name: "Silverado", type: "Vehicle", location: "Shop", assignedTo: "James Horseman", notes: "" },
+  { id: "PU10", name: "Silverado", type: "Vehicle", location: "Unknown", assignedTo: "Davy Martin", notes: "" },
+  { id: "PU11", name: "Silverado", type: "Vehicle", location: "Unknown", assignedTo: "Unknown", notes: "" },
+  { id: "PU13", name: "F250", type: "Vehicle", location: "Unknown", assignedTo: "Brandon Norris", notes: "" },
+  { id: "PU14", name: "F150", type: "Vehicle", location: "Unknown", assignedTo: "Spare HBG", notes: "" },
+  { id: "PU15", name: "F150", type: "Vehicle", location: "Unknown", assignedTo: "ESG", notes: "" },
+  { id: "PU16", name: "Sierra 3500", type: "Vehicle", location: "Unknown", assignedTo: "Kevin Rice", notes: "" },
+  { id: "PU17", name: "Sierra 3500", type: "Vehicle", location: "Unknown", assignedTo: "Jacob Blackman", notes: "" },
+  { id: "PU18", name: "Sierra 3500", type: "Vehicle", location: "Unknown", assignedTo: "Michael Rogers", notes: "" },
+  { id: "PU19", name: "Sierra 3500", type: "Vehicle", location: "Unknown", assignedTo: "Ryan Heady", notes: "" },
+  { id: "PU20", name: "Sierra 3500", type: "Vehicle", location: "Unknown", assignedTo: "Doug Uhls", notes: "" },
+  { id: "PU21", name: "F150", type: "Vehicle", location: "Unknown", assignedTo: "Dave Martin", notes: "" },
+  { id: "PV1", name: "E350 Van", type: "Vehicle", location: "Unknown", assignedTo: "Eldorado", notes: "" },
+  { id: "TT1", name: "Semi Tractor", type: "CMV", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "TT2", name: "Semi Tractor", type: "CMV", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "ST2", name: "Silverado", type: "Vehicle", location: "Unknown", assignedTo: "Shop Truck", notes: "" },
+  { id: "ST3", name: "F350 Van", type: "Vehicle", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "ST4", name: "Ram 4500", type: "Vehicle", location: "Unknown", assignedTo: "Steve McGhee-old", notes: "" },
+  { id: "ST5", name: "Ram 2500", type: "Vehicle", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "ST6", name: "Ram 5500", type: "Vehicle", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "ST7", name: "Silverado", type: "Vehicle", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "ST8", name: "Ram 3500", type: "Vehicle", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "ST9", name: "Sierra 3500", type: "Vehicle", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "ST10", name: "Semi Tractor", type: "CMV", location: "Unknown", assignedTo: "", notes: "" },
 ];
 
 const locations = [
@@ -102,32 +102,41 @@ export default function EquipmentTracker() {
       <h1 style={styles.header}>Equipment Tracker</h1>
       <div style={styles.list}>
         {equipment.map((eq) => (
-          <div key={eq.id} style={styles.item}>
-            <div style={styles.itemHeader}>
-              <span style={styles.itemName}>{eq.name} ({eq.type})</span>
-              <span style={styles.itemID}>ID: {eq.id}</span>
-            </div>
-            <div style={styles.selectContainer}>
-              <select
-                value={eq.location}
-                onChange={(e) => updateEquipment(eq.id, "location", e.target.value)}
-                style={styles.select}
-              >
-                {locations.map((loc) => (
-                  <option key={loc} value={loc}>{loc}</option>
-                ))}
-              </select>
-              <select
-                value={eq.assignedTo}
-                onChange={(e) => updateEquipment(eq.id, "assignedTo", e.target.value)}
-                style={styles.select}
-              >
-                <option value="">Unassigned</option>
-                {employees.map((emp) => (
-                  <option key={emp} value={emp}>{emp}</option>
-                ))}
-              </select>
-            </div>
+          <div key={eq.id} style={styles.card}>
+            <h2 style={styles.cardTitle}>{eq.name} ({eq.type})</h2>
+
+            {/* Notes Section */}
+            <label style={styles.label}>Notes:</label>
+            <textarea
+              value={eq.notes}
+              onChange={(e) => updateEquipment(eq.id, "notes", e.target.value)}
+              style={styles.textarea}
+            />
+
+            <p style={styles.itemID}>ID: {eq.id}</p>
+
+            <label style={styles.label}>Location:</label>
+            <select
+              value={eq.location}
+              onChange={(e) => updateEquipment(eq.id, "location", e.target.value)}
+              style={styles.select}
+            >
+              {locations.map((loc) => (
+                <option key={loc} value={loc}>{loc}</option>
+              ))}
+            </select>
+
+            <label style={styles.label}>Assigned To:</label>
+            <select
+              value={eq.assignedTo}
+              onChange={(e) => updateEquipment(eq.id, "assignedTo", e.target.value)}
+              style={styles.select}
+            >
+              <option value="">Unassigned</option>
+              {employees.map((emp) => (
+                <option key={emp} value={emp}>{emp}</option>
+              ))}
+            </select>
           </div>
         ))}
       </div>
@@ -154,39 +163,45 @@ const styles = {
     flexDirection: 'column',
     gap: '10px',
   },
-  item: {
+  card: {
     backgroundColor: '#FFFFFF',
-    padding: '10px',
+    padding: '12px',
     borderRadius: '6px',
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
     display: 'flex',
     flexDirection: 'column',
   },
-  itemHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    fontSize: '14px',
+  cardTitle: {
+    fontSize: '16px',
     fontWeight: 'bold',
-  },
-  itemName: {
-    fontSize: '14px',
-    fontWeight: 'bold',
+    marginBottom: '5px',
   },
   itemID: {
     fontSize: '12px',
     color: '#666',
+    marginBottom: '6px',
   },
-  selectContainer: {
-    display: 'flex',
-    gap: '8px',
+  label: {
+    fontSize: '12px',
+    fontWeight: 'bold',
     marginTop: '6px',
   },
+  textarea: {
+    width: "100%",
+    minHeight: "40px",
+    padding: "5px",
+    fontSize: "14px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    resize: "vertical",
+    marginBottom: "10px",
+  },
   select: {
-    flex: 1,
-    padding: '6px',
-    fontSize: '14px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
+    width: "100%",
+    padding: "6px",
+    fontSize: "14px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+    marginBottom: "10px",
   },
 };
