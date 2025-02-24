@@ -84,17 +84,11 @@ function App() {
           )}
         </div>
 
-        {/* Equipment Tracker Section */}
-        <div id="equipment-section" style={styles.section}>
-          <EquipmentTracker />
-        </div>
-
-        {/* Routes */}
-        <Routes>
-          <Route path="/redirect" element={<RedirectPage />} />
-        </Routes>
+       {/* Equipment Tracker Section */}
+      <div id="equipment-section">
+        <EquipmentTracker />
       </div>
-    </Router>
+    </div>
   );
 }
 
@@ -115,7 +109,7 @@ const styles = {
     alignItems: 'center',
   },
   loginButton: {
-    backgroundColor: '#E67E22', // Professional muted orange
+    backgroundColor: '#E67E22',
     border: 'none',
     color: '#FFF',
     padding: '10px 20px',
@@ -123,9 +117,6 @@ const styles = {
     cursor: 'pointer',
     borderRadius: '5px',
     transition: 'background 0.3s',
-  },
-  loginButtonHover: {
-    backgroundColor: '#D35400',
   },
   container: {
     padding: '2rem',
@@ -139,7 +130,7 @@ const styles = {
     marginTop: '20px',
   },
   button: {
-    background: '#E67E22', // Professional muted orange
+    background: '#E67E22',
     color: '#FFF',
     padding: '12px',
     textDecoration: 'none',
@@ -149,23 +140,13 @@ const styles = {
     display: 'inline-block',
     transition: 'background 0.3s',
   },
-  buttonHover: {
-    background: '#D35400',
-  },
   weatherBox: {
     marginTop: '30px',
     padding: '15px',
     background: '#FFFFFF',
     borderRadius: '8px',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  },
-  section: {
-    marginTop: '40px',
-    padding: '20px',
-    backgroundColor: '#FFFFFF',
-    borderRadius: '8px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  },
+  }
 };
 
 export default App;
