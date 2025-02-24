@@ -161,55 +161,43 @@ const styles = {
   container: {
     padding: '10px',
     fontFamily: 'Arial, sans-serif',
-    maxWidth: '500px',
+    maxWidth: '900px',
     margin: 'auto',
   },
   header: {
     textAlign: 'center',
-    fontSize: '20px',
+    fontSize: '22px',
     fontWeight: 'bold',
     marginBottom: '10px',
   },
-  list: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
+  gridContainer: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', // Adjusted for better fit
+    gap: '0px', // No spacing to align grid lines perfectly
+    border: '2px solid black', // Outer border for the entire grid
   },
-  card: {
+  gridItem: {
     backgroundColor: '#FFFFFF',
-    padding: '8px',
-    borderRadius: '6px',
-    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
-    fontSize: '12px',
-  },
-  row: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '5px',
+    padding: '10px',
+    border: '1px solid black', // Black grid lines for each cell
+    textAlign: 'center',
   },
   cardTitle: {
     fontSize: '14px',
     fontWeight: 'bold',
-    flex: '1',
-  },
-  notesInput: {
-    width: '80px',
-    fontSize: '12px',
-    padding: '4px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-  },
-  id: {
-    fontSize: '10px',
-    color: '#666',
-    whiteSpace: 'nowrap',
   },
   select: {
     width: '100%',
-    padding: '6px',
     fontSize: '12px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
+    border: '1px solid black', // Adds border to dropdowns
+    padding: '4px',
+  },
+  textarea: {
+    width: '100%',
+    fontSize: '12px',
+    resize: 'none',
+    border: '1px solid black', // Adds border to textarea
+    padding: '4px',
   },
 };
+
