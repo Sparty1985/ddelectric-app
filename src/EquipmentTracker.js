@@ -45,4 +45,8 @@ function EquipmentTracker() {
 // Styling
 const styles = {
   container: { padding: '2rem' },
-  card: {
+  card: {    
+    background: '#fff',
+    padding: '1rem'
+  }
+};
