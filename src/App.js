@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { getWeatherData } from './weatherAPI'; // Weather API helper
 import EquipmentTracker from './EquipmentTracker'; // Equipment Page
 import RedirectPage from './RedirectPage'; // Redirect Page to handle code exchange
@@ -9,28 +9,9 @@ function App() {
   const [weather, setWeather] = useState(null);
   const [employees, setEmployees] = useState([]);
   const [actionItems, setActionItems] = useState([]);
-  const navigate = useNavigate();
 
   const CLIENT_ID = 'iIwfbLFJxuYA99-mlZDNWCB-kGB4jb3eEpdUB0InkkE'; // Replace with your Procore Client ID
-  const REDIRECT_URI = 'https://ddelectric-equip.netlify.app/redirect'; // Make sure this matches Procore App settings
-
-  // Check if user is logged in with Procore OAuth
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const authCode = urlParams.get('code');
-
-    // If there's an auth code, store it and stop redirecting
-    if (authCode) {
-      localStorage.setItem('procore_auth_code', authCode);
-      navigate('/'); // Redirect to the homepage without query params
-      return;
-    }
-
-    // If no auth code, force login through Procore
-    if (!localStorage.getItem('procore_auth_code')) {
-      redirectToProcoreAuth();
-    }
-  }, []);
+  const REDIRECT_URI = 'https://ddelectric-equip.netlify.app'; // Ensure this matches your Procore settings
 
   // Procore OAuth Login Redirect
   const redirectToProcoreAuth = () => {
@@ -69,38 +50,37 @@ function App() {
     <Router>
       <div style={styles.app}>
         <header style={styles.header}>
-          <h1>D&D Electric App</h1>
+          <h1>D&D Electric Equipment</h1>
+          <button onClick={redirectToProcoreAuth} style={styles.loginButton}>
+            Login with Procore
+          </button>
         </header>
 
         {/* Main Dashboard */}
-        <Routes>
-          <Route path="/" element={
-            <div style={styles.dashboard}>
-              <h2>Dashboard</h2>
-              <div style={styles.buttonGrid}>
-                <a href="https://us02.procore.com/webclients/host/companies/598134325599451/tools/equipment" style={styles.button}>Equipment Tracker</a>
-                <a href="https://us02.procore.com/webclients/host/companies/598134325599451/tools/companytimesheets" style={styles.button}>Time Clock</a>
-                <a href="https://us02.procore.com/598134325599451/company/home/my_open_items" style={styles.button}>My Open Action Items ({actionItems.length})</a>
-                <a href="https://us02.procore.com/598134325599451/company/directory/groups/users?page=1&per_page=150&search=&group_by=vendor.id&sort=vendor_name%2Cname" style={styles.button}>Employee Directory</a>
-                <a href="https://us02.procore.com/598134325599451/company/documents" style={styles.button}>Company Documents</a>
-              </div>
+        <div style={styles.container}>
+          <h2>Dashboard</h2>
+          <div style={styles.buttonGrid}>
+            <a href="https://us02.procore.com/webclients/host/companies/598134325599451/tools/equipment" style={styles.button}>Equipment Tracker</a>
+            <a href="https://us02.procore.com/webclients/host/companies/598134325599451/tools/companytimesheets" style={styles.button}>Time Clock</a>
+            <a href="https://us02.procore.com/598134325599451/company/home/my_open_items" style={styles.button}>My Open Action Items ({actionItems.length})</a>
+            <a href="https://us02.procore.com/598134325599451/company/directory/groups/users?page=1&per_page=150&search=&group_by=vendor.id&sort=vendor_name%2Cname" style={styles.button}>Employee Directory</a>
+            <a href="https://us02.procore.com/598134325599451/company/documents" style={styles.button}>Company Documents</a>
+          </div>
 
-              {/* Weather Widget */}
-              {weather && (
-                <div style={styles.weatherBox}>
-                  <h3>Weather</h3>
-                  <p>{weather.city}</p>
-                  <p>Temp: {weather.temp}°F</p>
-                  <p>Precip: {weather.precip}%</p>
-                </div>
-              )}
+          {/* Weather Widget */}
+          {weather && (
+            <div style={styles.weatherBox}>
+              <h3>Current Weather</h3>
+              <p><strong>{weather.city}</strong></p>
+              <p>Temperature: {weather.temp}°F</p>
+              <p>Precipitation: {weather.precip}%</p>
             </div>
-          }/>
+          )}
+        </div>
 
-          {/* Equipment Tracker Page */}
+        {/* Routes */}
+        <Routes>
           <Route path="/equipment" element={<EquipmentTracker />} />
-          
-          {/* Redirect Page for OAuth */}
           <Route path="/redirect" element={<RedirectPage />} />
         </Routes>
       </div>
@@ -108,14 +88,67 @@ function App() {
   );
 }
 
-// Styles for UI
+// Styles for a more professional UI
 const styles = {
-  app: { textAlign: 'center', fontFamily: 'Arial, sans-serif' },
-  header: { background: '#0A1633', color: '#F2B705', padding: '1rem' },
-  dashboard: { padding: '2rem' },
-  buttonGrid: { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' },
-  button: { background: '#F2B705', padding: '1rem', borderRadius: '10px', textDecoration: 'none', color: 'black' },
-  weatherBox: { marginTop: '1rem', padding: '1rem', background: '#EEE', borderRadius: '10px' }
+  app: {
+    textAlign: 'center',
+    fontFamily: 'Arial, sans-serif',
+    backgroundColor: '#F7F7F7',
+    minHeight: '100vh',
+  },
+  header: {
+    background: '#1F2937',
+    color: '#FFFFFF',
+    padding: '1rem',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  loginButton: {
+    backgroundColor: '#E67E22', // Professional muted orange
+    border: 'none',
+    color: '#FFF',
+    padding: '10px 20px',
+    fontSize: '14px',
+    cursor: 'pointer',
+    borderRadius: '5px',
+    transition: 'background 0.3s',
+  },
+  loginButtonHover: {
+    backgroundColor: '#D35400',
+  },
+  container: {
+    padding: '2rem',
+    maxWidth: '800px',
+    margin: '0 auto',
+  },
+  buttonGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gap: '1rem',
+    marginTop: '20px',
+  },
+  button: {
+    background: '#E67E22', // Professional muted orange
+    color: '#FFF',
+    padding: '12px',
+    textDecoration: 'none',
+    borderRadius: '6px',
+    fontSize: '16px',
+    textAlign: 'center',
+    display: 'inline-block',
+    transition: 'background 0.3s',
+  },
+  buttonHover: {
+    background: '#D35400',
+  },
+  weatherBox: {
+    marginTop: '30px',
+    padding: '15px',
+    background: '#FFFFFF',
+    borderRadius: '8px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+  }
 };
 
 export default App;
