@@ -50,13 +50,13 @@ import React, { useState } from 'react';
   { id: "TT1", name: "Semi Tractor", type: "CMV", location: "Unknown", assignedTo: "", notes: "" },
   { id: "TT2", name: "Semi Tractor", type: "CMV", location: "Unknown", assignedTo: "", notes: "" },
   { id: "ST2", name: "Silverado", type: "Vehicle", location: "Unknown", assignedTo: "Shop Truck", notes: "" },
-  { id: "ST3", name: "F350 Van", type: "Vehicle", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "ST3", name: "F350 Dually", type: "Vehicle", location: "Unknown", assignedTo: "Christian Rogers", notes: "" },
   { id: "ST4", name: "Ram 4500", type: "Vehicle", location: "Unknown", assignedTo: "Steve McGhee-old", notes: "" },
   { id: "ST5", name: "Ram 2500", type: "Vehicle", location: "Unknown", assignedTo: "", notes: "" },
-  { id: "ST6", name: "Ram 5500", type: "Vehicle", location: "Unknown", assignedTo: "", notes: "" },
-  { id: "ST7", name: "Silverado", type: "Vehicle", location: "Unknown", assignedTo: "", notes: "" },
-  { id: "ST8", name: "Ram 3500", type: "Vehicle", location: "Unknown", assignedTo: "", notes: "" },
-  { id: "ST9", name: "Sierra 3500", type: "Vehicle", location: "Unknown", assignedTo: "", notes: "" },
+  { id: "ST6", name: "Ram 5500", type: "Vehicle", location: "Unknown", assignedTo: "Bill Taylor", notes: "" },
+  { id: "ST7", name: "Silverado", type: "Vehicle", location: "Unknown", assignedTo: "Bobby Ragsdale", notes: "" },
+  { id: "ST8", name: "Ram 3500 Red Flatbed", type: "Vehicle", location: "Shop", assignedTo: "", notes: "" },
+  { id: "ST9", name: "Sierra 3500", type: "Vehicle", location: "Unknown", assignedTo: "Jeff Hathaway", notes: "" },
   { id: "ST10", name: "Semi Tractor", type: "CMV", location: "Unknown", assignedTo: "", notes: "" },
 ];
 
