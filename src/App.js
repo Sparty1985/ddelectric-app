@@ -28,6 +28,8 @@ function App() {
     });
   }, []);
 
+  <EquipmentTracker />
+  
   // Load Employees from Procore
   useEffect(() => {
     async function fetchEmployees() {
