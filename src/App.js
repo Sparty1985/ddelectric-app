@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { getWeatherData } from './weatherAPI'; // Weather API helper
 import EquipmentTracker from './EquipmentTracker'; // Equipment Page
+import RedirectPage from './RedirectPage'; // Redirect Page to handle code exchange
 import { getProcoreEmployees, getProcoreActionItems } from './procoreAPI'; // Procore API helpers
 
 function App() {
@@ -39,9 +40,9 @@ function App() {
   // Redirect User to Procore OAuth Authorization URL
   const redirectToProcoreAuth = () => {
     const clientId = 'YOUR_CLIENT_ID';  // Replace with your Procore Client ID
-    const redirectUri = 'YOUR_REDIRECT_URI';  // Replace with your redirect URI (make sure it's registered in Procore)
+    const redirectUri = 'https://ddelectric-equip.netlify.app/';  // Your Redirect URI
     const authUrl = `https://app.procore.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
-    window.location.href = authUrl;  // Redirect user to Procore's authorization page
+    window.location.href = authUrl;  // Redirect the user to Procore's authorization page
   };
 
   return (
@@ -79,22 +80,3 @@ function App() {
             </div>
           }/>
 
-          {/* Equipment Tracker Page */}
-          <Route path="/equipment" element={<EquipmentTracker />} />
-        </Routes>
-      </div>
-    </Router>
-  );
-}
-
-// Styles for UI
-const styles = {
-  app: { textAlign: 'center', fontFamily: 'Arial, sans-serif' },
-  header: { background: '#0A1633', color: '#F2B705', padding: '1rem' },
-  dashboard: { padding: '2rem' },
-  buttonGrid: { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' },
-  button: { background: '#F2B705', padding: '1rem', borderRadius: '10px', textDecoration: 'none', color: 'black' },
-  weatherBox: { marginTop: '1rem', padding: '1rem', background: '#EEE', borderRadius: '10px' }
-};
-
-export default App;
