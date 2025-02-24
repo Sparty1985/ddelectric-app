@@ -24,18 +24,35 @@ const fetchAccessToken = async () => {
 
 // Function to fetch data from Procore API
 const procoreFetch = async (endpoint) => {
-    const token = localStorage.getItem("procore_access_token") || await fetchAccessToken();
-    if (!token) return null;
+    let token = localStorage.getItem("procore_access_token");
+
+    // If no token exists, fetch a new one
+    if (!token) {
+        token = await fetchAccessToken();
+        if (!token) {
+            console.error("No Procore access token available.");
+            return {};
+        }
+    }
 
     try {
         const response = await fetch(`${PROCORE_BASE_URL}${endpoint}`, {
             headers: { Authorization: `Bearer ${token}` },
         });
 
+        if (!response.ok) {
+            // Token might be expired, clear it and try again
+            if (response.status === 401) {
+                localStorage.removeItem("procore_access_token");
+                return await procoreFetch(endpoint); // Retry with fresh token
+            }
+            throw new Error(`API request failed with status ${response.status}`);
+        }
+
         return await response.json();
     } catch (error) {
         console.error("Procore API Error:", error);
-        return null;
+        return {};
     }
 };
 
