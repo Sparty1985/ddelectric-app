@@ -1,14 +1,14 @@
 const PROCORE_BASE_URL = "https://api.procore.com/rest/v1.0";
-const CLIENT_ID = process.env.REACT_APP_PROCORE_CLIENT_ID;
-const CLIENT_SECRET = process.env.REACT_APP_PROCORE_CLIENT_SECRET;
-const REFRESH_TOKEN = process.env.REACT_APP_PROCORE_REFRESH_TOKEN;
 
-// Function to fetch access token
+// Function to fetch access token via Netlify function
 const fetchAccessToken = async () => {
     try {
         const response = await fetch("/.netlify/functions/procoreProxy");
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
         const data = await response.json();
-        
         if (data.access_token) {
             localStorage.setItem("procore_access_token", data.access_token);
             return data.access_token;
@@ -22,7 +22,7 @@ const fetchAccessToken = async () => {
     }
 };
 
-// Function to make requests to Procore API
+// Function to fetch data from Procore API
 const procoreFetch = async (endpoint) => {
     const token = localStorage.getItem("procore_access_token") || await fetchAccessToken();
     if (!token) return null;
