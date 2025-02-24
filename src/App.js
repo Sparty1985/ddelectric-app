@@ -73,18 +73,19 @@ function App() {
             <a href="https://us02.procore.com/598134325599451/company/documents" style={styles.button}>Company Documents</a>
           </div>
 
-          {/* Weather Widget */}
-          {weather && (
-            <div style={styles.weatherBox}>
-              <h3>Current Weather</h3>
-              <p><strong>{weather.city}</strong></p>
-              <p>Temperature: {weather.temp}°F</p>
-              <p>Precipitation: {weather.precip}%</p>
-            </div>
-          )}
-        </div>
+          
+        {/* Weather Widget */}
+        {weather && (
+          <div style={styles.weatherBox}>
+            <h3>Current Weather</h3>
+            <p><strong>{weather.city}</strong></p>
+            <p>Temperature: {weather.temp}°F</p>
+            <p>Precipitation: {weather.precip}%</p>
+          </div>
+        )}
+      </div>
 
-       {/* Equipment Tracker Section */}
+      {/* Equipment Tracker Section */}
       <div id="equipment-section">
         <EquipmentTracker />
       </div>
@@ -92,7 +93,7 @@ function App() {
   );
 }
 
-// Styles for a more professional UI
+// Styles
 const styles = {
   app: {
     textAlign: 'center',
