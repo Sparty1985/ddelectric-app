@@ -59,10 +59,10 @@ function App() {
               <h2>Dashboard</h2>
               <div style={styles.buttonGrid}>
                 <Link to="/equipment" style={styles.button}>Equipment Tracker</Link>
-                <a href="https://procore.com" style={styles.button}>Time Clock</a>
-                <a href="https://procore.com" style={styles.button}>My Open Action Items ({actionItems.length})</a>
-                <a href="https://procore.com/employees" style={styles.button}>Employee Directory</a>
-                <a href="https://procore.com/forms" style={styles.button}>Company Documents</a>
+                <a href="https://us02.procore.com/webclients/host/companies/598134325599451/tools/companytimesheets" style={styles.button}>Time Clock</a>
+                <a href="https://us02.procore.com/598134325599451/company/home/my_open_items" style={styles.button}>My Open Action Items ({actionItems.length})</a>
+                <a href="https://us02.procore.com/598134325599451/company/directory/groups/users?page=1&per_page=150&search=&group_by=vendor.id&sort=vendor_name%2Cname" style={styles.button}>Employee Directory</a>
+                <a href="https://us02.procore.com/598134325599451/company/documents" style={styles.button}>Company Documents</a>
               </div>
 
               {/* Add Login Button for Procore OAuth */}
