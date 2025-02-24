@@ -39,7 +39,7 @@ function App() {
 
   // Redirect User to Procore OAuth Authorization URL
   const redirectToProcoreAuth = () => {
-    const clientId = iIwfbLFJxuYA99-mlZDNWCB-kGB4jb3eEpdUB0InkkE;  // Replace with your Procore Client ID
+    const clientId = 'iIwfbLFJxuYA99-mlZDNWCB-kGB4jb3eEpdUB0InkkE';  // Replace with your Procore Client ID
     const redirectUri = 'https://ddelectric-equip.netlify.app';  // Your Redirect URI
     const authUrl = `https://app.procore.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
     window.location.href = authUrl;  // Redirect the user to Procore's authorization page
@@ -175,8 +175,3 @@ const styles = {
 };
 
 export default App;
-
-              )}
-            </div>
-          }/>
-
