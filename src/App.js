@@ -75,7 +75,9 @@ function App() {
                   <p>{weather.city}</p>
                   <p>Temp: {weather.temp}°F</p>
                   <p>Precip: {weather.precip}%</p>
-                </div>import React, { useState, useEffect } from 'react';
+                </div>
+                
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { getWeatherData } from './weatherAPI'; // Weather API helper
 import EquipmentTracker from './EquipmentTracker'; // Equipment Page
