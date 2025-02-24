@@ -1,31 +1,68 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
 import { getWeatherData } from './weatherAPI'; // Weather API helper
-import RedirectPage from './RedirectPage'; // OAuth Redirect Handler
+import EquipmentTracker from './EquipmentTracker'; // Equipment Page
+import RedirectPage from './RedirectPage'; // Redirect Page to handle code exchange
+import { getProcoreEmployees, getProcoreActionItems } from './procoreAPI'; // Procore API helpers
 
 function App() {
   const [weather, setWeather] = useState(null);
-  
-  // Procore OAuth Configuration
-  const clientId = 'iIwfbLFJxuYA99-mlZDNWCB-kGB4jb3eEpdUB0InkkE';
-  const redirectUri = 'https://ddelectric-equip.netlify.app'; // Ensuring correct path
-  const authUrl = `https://app.procore.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+  const [employees, setEmployees] = useState([]);
+  const [actionItems, setActionItems] = useState([]);
+  const navigate = useNavigate();
 
-  // 🔴 Force Login if No Access Token
+  const CLIENT_ID = 'iIwfbLFJxuYA99-mlZDNWCB-kGB4jb3eEpdUB0InkkE'; // Replace with your Procore Client ID
+  const REDIRECT_URI = 'https://ddelectric-equip.netlify.app/redirect'; // Make sure this matches Procore App settings
+
+  // Check if user is logged in with Procore OAuth
   useEffect(() => {
-    const token = localStorage.getItem("procore_access_token");
-    if (!token) {
-      window.location.href = authUrl; // Redirect to Procore login
+    const urlParams = new URLSearchParams(window.location.search);
+    const authCode = urlParams.get('code');
+
+    // If there's an auth code, store it and stop redirecting
+    if (authCode) {
+      localStorage.setItem('procore_auth_code', authCode);
+      navigate('/'); // Redirect to the homepage without query params
+      return;
+    }
+
+    // If no auth code, force login through Procore
+    if (!localStorage.getItem('procore_auth_code')) {
+      redirectToProcoreAuth();
     }
   }, []);
 
-  // Fetch Weather on App Start
+  // Procore OAuth Login Redirect
+  const redirectToProcoreAuth = () => {
+    const authUrl = `https://app.procore.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+    window.location.href = authUrl;
+  };
+
+  // Load Weather on App Start
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(async (position) => {
       const { latitude, longitude } = position.coords;
       const data = await getWeatherData(latitude, longitude);
       setWeather(data);
     });
+  }, []);
+
+  // Load Employees from Procore
+  useEffect(() => {
+    async function fetchEmployees() {
+      const procoreEmployees = await getProcoreEmployees();
+      setEmployees(procoreEmployees);
+    }
+    fetchEmployees();
+  }, []);
+
+  // Load Open Action Plan Items from Procore
+  useEffect(() => {
+    async function fetchActionItems() {
+      const procoreActions = await getProcoreActionItems();
+      setActionItems(procoreActions);
+    }
+    fetchActionItems();
   }, []);
 
   return (
@@ -43,8 +80,8 @@ function App() {
               <div style={styles.buttonGrid}>
                 <a href="https://us02.procore.com/webclients/host/companies/598134325599451/tools/equipment" style={styles.button}>Equipment Tracker</a>
                 <a href="https://us02.procore.com/webclients/host/companies/598134325599451/tools/companytimesheets" style={styles.button}>Time Clock</a>
-                <a href="https://us02.procore.com/598134325599451/company/home/my_open_items" style={styles.button}>My Open Action Items</a>
-                <a href="https://us02.procore.com/598134325599451/company/directory/groups/users?page=1&per_page=150" style={styles.button}>Employee Directory</a>
+                <a href="https://us02.procore.com/598134325599451/company/home/my_open_items" style={styles.button}>My Open Action Items ({actionItems.length})</a>
+                <a href="https://us02.procore.com/598134325599451/company/directory/groups/users?page=1&per_page=150&search=&group_by=vendor.id&sort=vendor_name%2Cname" style={styles.button}>Employee Directory</a>
                 <a href="https://us02.procore.com/598134325599451/company/documents" style={styles.button}>Company Documents</a>
               </div>
 
@@ -60,6 +97,9 @@ function App() {
             </div>
           }/>
 
+          {/* Equipment Tracker Page */}
+          <Route path="/equipment" element={<EquipmentTracker />} />
+          
           {/* Redirect Page for OAuth */}
           <Route path="/redirect" element={<RedirectPage />} />
         </Routes>
