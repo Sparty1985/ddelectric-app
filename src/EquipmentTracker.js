@@ -1,52 +1,78 @@
-import React, { useState, useEffect } from 'react';
-import { getProcoreEquipment, updateProcoreEquipment } from './procoreAPI'; // Procore API helpers
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-function EquipmentTracker() {
+const EquipmentTracker = () => {
   const [equipment, setEquipment] = useState([]);
-  const locations = ['Shop', 'ESL', 'Dragon’s Breath', '1407 Warehouse', 'Blue Hole', 'Local Solar', 'M Class', 'Mach', 'DTM'];
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fetch Equipment from Procore
+  // API Configuration (Replace with Your Procore API Details)
+  const PROCORE_API_URL = "https://api.procore.com/v1.0/equipment"; 
+  const PROCORE_ACCESS_TOKEN = "YOUR_ACCESS_TOKEN"; // Replace with actual token
+  const PROCORE_COMPANY_ID = "YOUR_COMPANY_ID"; // Replace with actual company ID
+
   useEffect(() => {
-    async function fetchEquipment() {
-      const procoreEquipment = await getProcoreEquipment();
-      setEquipment(procoreEquipment);
-    }
     fetchEquipment();
   }, []);
 
-  // Update Equipment in Procore
-  const updateEquipment = async (id, field, value) => {
-    setEquipment(prev => prev.map(eq => (eq.id === id ? { ...eq, [field]: value } : eq)));
-    await updateProcoreEquipment(id, { [field]: value });
+  const fetchEquipment = async () => {
+    try {
+      const response = await axios.get(PROCORE_API_URL, {
+        headers: {
+          Authorization: `Bearer ${PROCORE_ACCESS_TOKEN}`,
+          "Content-Type": "application/json",
+          "Procore-Company-Id": PROCORE_COMPANY_ID,
+        },
+      });
+      setEquipment(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching equipment:", error);
+      setError("Failed to load equipment data.");
+      setLoading(false);
+    }
   };
 
   return (
     <div style={styles.container}>
-      <h2>Equipment Tracker</h2>
-      {equipment.map(eq => (
-        <div key={eq.id} style={styles.card}>
-          <h3>{eq.name}</h3>
-          <p>ID: {eq.id}</p>
+      <h1 style={styles.header}>D&D Electric Equipment Tracker</h1>
 
-          <label>Location:</label>
-          <select value={eq.location || ''} onChange={e => updateEquipment(eq.id, 'location', e.target.value)}>
-            <option value=''>-- Select a Location --</option>
-            {locations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
-          </select>
+      {loading && <p>Loading equipment...</p>}
+      {error && <p style={styles.error}>{error}</p>}
 
-          <label>Assigned To:</label>
-          <input type="text" value={eq.assignedTo || ''} onChange={e => updateEquipment(eq.id, 'assignedTo', e.target.value)} />
-        </div>
-      ))}
+      <div style={styles.grid}>
+        {equipment.map((item) => (
+          <div key={item.id} style={styles.card}>
+            <h2 style={styles.equipmentName}>{item.name}</h2>
+            <p style={styles.equipmentInfo}>ID: {item.id}</p>
+            <p style={styles.equipmentInfo}>Status: {item.status}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
-}
-
-// Styling
-const styles = {
-  container: { padding: '2rem' },
-  card: {    
-    background: '#fff',
-    padding: '1rem'
-  }
 };
+
+// Styling for UI
+const styles = {
+  container: { padding: "2rem", fontFamily: "Arial, sans-serif" },
+  header: { textAlign: "center", color: "#0A1633" },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+    gap: "1rem",
+  },
+  card: {
+    background: "#FFF",
+    padding: "1rem",
+    borderRadius: "8px",
+    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.2)",
+    textAlign: "center",
+  },
+  equipmentName: { fontSize: "1.2rem", fontWeight: "bold", color: "#0A1633" },
+  equipmentInfo: { fontSize: "1rem", color: "#333" },
+  error: { color: "red", textAlign: "center" },
+};
+
+// Export Component
+export default EquipmentTracker;
