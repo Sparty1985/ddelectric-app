@@ -46,4 +46,13 @@ const procoreFetch = async (endpoint) => {
     }
 };
 
+// ✅ Add these functions so they can be used in App.js
+export const getProcoreEmployees = async (projectId) => {
+    return await procoreFetch(`/projects/${projectId}/employees`);
+};
+
+export const getProcoreActionItems = async (projectId) => {
+    return await procoreFetch(`/projects/${projectId}/action_plans/open_items`);
+};
+
 export { fetchAccessToken, procoreFetch };
