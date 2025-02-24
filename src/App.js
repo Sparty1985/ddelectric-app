@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { getWeatherData } from './weatherAPI'; // Weather API helper
-import RedirectPage from './RedirectPage'; // Redirect Page to handle code exchange
+import RedirectPage from './RedirectPage'; // OAuth Redirect Handler
 
 function App() {
   const [weather, setWeather] = useState(null);
-  const navigate = useNavigate();
   
   // Procore OAuth Configuration
   const clientId = 'iIwfbLFJxuYA99-mlZDNWCB-kGB4jb3eEpdUB0InkkE';
-  const redirectUri = 'https://ddelectric-equip.netlify.app';
+  const redirectUri = 'https://ddelectric-equip.netlify.app/redirect'; // Ensuring correct path
   const authUrl = `https://app.procore.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
 
   // 🔴 Force Login if No Access Token
