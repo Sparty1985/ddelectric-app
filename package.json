@@ -5,10 +5,12 @@
   "dependencies": {
     "axios": "^1.7.9",
     "firebase": "^11.3.1",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^3.3.2",  // Keeps node-fetch for backend calls
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-router-dom": "^6.15.0",
+    "react-router-dom": "^6.15.0"
+  },
+  "devDependencies": {
     "react-scripts": "5.0.1"
   },
   "scripts": {
