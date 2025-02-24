@@ -19,6 +19,12 @@ function App() {
     window.location.href = authUrl;
   };
 
+  // Smooth Scroll Function
+  const smoothScroll = (event, sectionId) => {
+    event.preventDefault();
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   // Load Weather on App Start
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(async (position) => {
@@ -28,8 +34,6 @@ function App() {
     });
   }, []);
 
-  <EquipmentTracker />
-  
   // Load Employees from Procore
   useEffect(() => {
     async function fetchEmployees() {
@@ -62,7 +66,7 @@ function App() {
         <div style={styles.container}>
           <h2>Dashboard</h2>
           <div style={styles.buttonGrid}>
-            <a href="#equipment-section" style={styles.button}>Equipment Tracker</a>
+            <a href="#equipment-section" style={styles.button} onClick={(e) => smoothScroll(e, "equipment-section")}>Equipment</a>
             <a href="https://us02.procore.com/webclients/host/companies/598134325599451/tools/companytimesheets" style={styles.button}>Time Clock</a>
             <a href="https://us02.procore.com/598134325599451/company/home/my_open_items" style={styles.button}>My Open Action Items</a>
             <a href="https://us02.procore.com/598134325599451/company/directory/groups/users?page=1&per_page=150&search=&group_by=vendor.id&sort=vendor_name%2Cname" style={styles.button}>Employee Directory</a>
@@ -80,9 +84,13 @@ function App() {
           )}
         </div>
 
+        {/* Equipment Tracker Section */}
+        <div id="equipment-section" style={styles.section}>
+          <EquipmentTracker />
+        </div>
+
         {/* Routes */}
         <Routes>
-          <Route path="/equipment" element={<EquipmentTracker />} />
           <Route path="/redirect" element={<RedirectPage />} />
         </Routes>
       </div>
@@ -150,7 +158,14 @@ const styles = {
     background: '#FFFFFF',
     borderRadius: '8px',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  }
+  },
+  section: {
+    marginTop: '40px',
+    padding: '20px',
+    backgroundColor: '#FFFFFF',
+    borderRadius: '8px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+  },
 };
 
 export default App;
