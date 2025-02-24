@@ -36,6 +36,14 @@ function App() {
     fetchActionItems();
   }, []);
 
+  // Redirect User to Procore OAuth Authorization URL
+  const redirectToProcoreAuth = () => {
+    const clientId = 'YOUR_CLIENT_ID';  // Replace with your Procore Client ID
+    const redirectUri = 'YOUR_REDIRECT_URI';  // Replace with your redirect URI (make sure it's registered in Procore)
+    const authUrl = `https://app.procore.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+    window.location.href = authUrl;  // Redirect user to Procore's authorization page
+  };
+
   return (
     <Router>
       <div style={styles.app}>
@@ -55,6 +63,9 @@ function App() {
                 <a href="https://procore.com/employees" style={styles.button}>Employee Directory</a>
                 <a href="https://procore.com/forms" style={styles.button}>Company Documents</a>
               </div>
+
+              {/* Add Login Button for Procore OAuth */}
+              <button onClick={redirectToProcoreAuth} style={styles.button}>Login with Procore</button>
 
               {/* Weather Widget */}
               {weather && (
