@@ -98,24 +98,24 @@ export default function EquipmentTracker() {
   };
 
   return (
-    <div style={styles.container}>
+    <div id="equipment-section" style={styles.container}>
       <h1 style={styles.header}>Equipment Tracker</h1>
       <div style={styles.list}>
         {equipment.map((eq) => (
           <div key={eq.id} style={styles.card}>
-            <h2 style={styles.cardTitle}>{eq.name} ({eq.type})</h2>
+            <div style={styles.row}>
+              <h2 style={styles.cardTitle}>{eq.name} ({eq.type})</h2>
+              <input
+                type="text"
+                value={eq.notes || ""}
+                onChange={(e) => updateEquipment(eq.id, "notes", e.target.value)}
+                placeholder="Notes"
+                style={styles.notesInput}
+              />
+              <p style={styles.id}>ID: {eq.id}</p>
+            </div>
 
-            {/* Notes Section */}
-            <label style={styles.label}>Notes:</label>
-            <textarea
-              value={eq.notes}
-              onChange={(e) => updateEquipment(eq.id, "notes", e.target.value)}
-              style={styles.textarea}
-            />
-
-            <p style={styles.itemID}>ID: {eq.id}</p>
-
-            <label style={styles.label}>Location:</label>
+            <label>Location:</label>
             <select
               value={eq.location}
               onChange={(e) => updateEquipment(eq.id, "location", e.target.value)}
@@ -126,7 +126,7 @@ export default function EquipmentTracker() {
               ))}
             </select>
 
-            <label style={styles.label}>Assigned To:</label>
+            <label>Assigned To:</label>
             <select
               value={eq.assignedTo}
               onChange={(e) => updateEquipment(eq.id, "assignedTo", e.target.value)}
@@ -144,64 +144,61 @@ export default function EquipmentTracker() {
   );
 }
 
+
 // Styles optimized for mobile readability
 const styles = {
   container: {
     padding: '10px',
     fontFamily: 'Arial, sans-serif',
-    maxWidth: '600px',
+    maxWidth: '500px',
     margin: 'auto',
   },
   header: {
     textAlign: 'center',
-    fontSize: '22px',
+    fontSize: '20px',
     fontWeight: 'bold',
     marginBottom: '10px',
   },
   list: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '10px',
+    gap: '8px',
   },
   card: {
     backgroundColor: '#FFFFFF',
-    padding: '12px',
+    padding: '8px',
     borderRadius: '6px',
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+    fontSize: '12px',
+  },
+  row: {
     display: 'flex',
-    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '5px',
   },
   cardTitle: {
-    fontSize: '16px',
+    fontSize: '14px',
     fontWeight: 'bold',
-    marginBottom: '5px',
+    flex: '1',
   },
-  itemID: {
+  notesInput: {
+    width: '80px',
     fontSize: '12px',
+    padding: '4px',
+    borderRadius: '4px',
+    border: '1px solid #ccc',
+  },
+  id: {
+    fontSize: '10px',
     color: '#666',
-    marginBottom: '6px',
-  },
-  label: {
-    fontSize: '12px',
-    fontWeight: 'bold',
-    marginTop: '6px',
-  },
-  textarea: {
-    width: "100%",
-    minHeight: "40px",
-    padding: "5px",
-    fontSize: "14px",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-    resize: "vertical",
-    marginBottom: "10px",
+    whiteSpace: 'nowrap',
   },
   select: {
-    width: "100%",
-    padding: "6px",
-    fontSize: "14px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-    marginBottom: "10px",
+    width: '100%',
+    padding: '6px',
+    fontSize: '12px',
+    borderRadius: '4px',
+    border: '1px solid #ccc',
   },
 };
