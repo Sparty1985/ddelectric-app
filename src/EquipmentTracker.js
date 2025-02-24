@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
+import { db } from "./firebaseConfig"; // Ensure this is correctly imported
+import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 
+export default function EquipmentTracker() {
+  
   const initialEquipment = [
   { id: "DT2", name: "Dump Trailer", type: "Trailer", location: "Shop", assignedTo: "", notes: "" },
   { id: "DC1", name: "LPX210", type: "Trailer", location: "Shop", assignedTo: "", notes: "" },
@@ -88,14 +92,16 @@ const employees = [
   "Dallas Varble", "Grant Vickery", "Darla Martin"
 ];
 
-export default function EquipmentTracker() {
-  const [equipment, setEquipment] = useState(initialEquipment);
+
+   const [equipment, setEquipment] = useState(initialEquipment);
   const [viewMode, setViewMode] = useState('list');
 
-  const updateEquipment = (id, field, value) => {
+  const updateEquipment = async (id, field, value) => {
     setEquipment((prev) =>
       prev.map((eq) => (eq.id === id ? { ...eq, [field]: value } : eq))
     );
+    const equipmentRef = doc(db, "equipment", id);
+    await updateDoc(equipmentRef, { [field]: value });
   };
 
   return (
@@ -112,19 +118,25 @@ export default function EquipmentTracker() {
               <h2 style={styles.cardTitle}>{eq.name} ({eq.type})</h2>
               <label>Location:</label>
               <select value={eq.location} onChange={(e) => updateEquipment(eq.id, "location", e.target.value)} style={styles.select}>
-                {locations.map((loc) => (
+                {["Shop", "Warehouse", "Site"].map((loc) => (
                   <option key={loc} value={loc}>{loc}</option>
                 ))}
               </select>
               <label>Assigned To:</label>
               <select value={eq.assignedTo} onChange={(e) => updateEquipment(eq.id, "assignedTo", e.target.value)} style={styles.select}>
                 <option value="">Unassigned</option>
-                {employees.map((emp) => (
+                {["Nathan Sumner", "Tommy Reyling", "Shop Truck"].map((emp) => (
                   <option key={emp} value={emp}>{emp}</option>
                 ))}
               </select>
               <label>Notes:</label>
-              <textarea value={eq.notes} onChange={(e) => updateEquipment(eq.id, "notes", e.target.value)} style={styles.textarea} />
+              <input
+                type="text"
+                value={eq.notes}
+                onChange={(e) => updateEquipment(eq.id, "notes", e.target.value)}
+                style={styles.notesInput}
+                placeholder="Add notes..."
+              />
             </div>
           ))}
         </div>
@@ -146,7 +158,15 @@ export default function EquipmentTracker() {
                 <td>{eq.name} ({eq.type})</td>
                 <td>{eq.location}</td>
                 <td>{eq.assignedTo || 'Unassigned'}</td>
-                <td>{eq.notes}</td>
+                <td>
+                  <input
+                    type="text"
+                    value={eq.notes}
+                    onChange={(e) => updateEquipment(eq.id, "notes", e.target.value)}
+                    style={styles.notesInput}
+                    placeholder="Add notes..."
+                  />
+                </td>
               </tr>
             ))}
           </tbody>
@@ -170,17 +190,30 @@ const styles = {
     fontWeight: 'bold',
     marginBottom: '10px',
   },
-  gridContainer: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', // Adjusted for better fit
-    gap: '0px', // No spacing to align grid lines perfectly
-    border: '2px solid black', // Outer border for the entire grid
+  toggleButton: {
+    display: 'block',
+    margin: '10px auto',
+    padding: '8px 12px',
+    fontSize: '14px',
+    backgroundColor: '#E67E22',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
   },
-  gridItem: {
+  list: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+  },
+  card: {
     backgroundColor: '#FFFFFF',
     padding: '10px',
-    border: '1px solid black', // Black grid lines for each cell
-    textAlign: 'center',
+    borderRadius: '6px',
+    border: "1px solid black",
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+    display: 'flex',
+    flexDirection: 'column',
   },
   cardTitle: {
     fontSize: '14px',
@@ -189,15 +222,22 @@ const styles = {
   select: {
     width: '100%',
     fontSize: '12px',
-    border: '1px solid black', // Adds border to dropdowns
+    border: '1px solid black',
     padding: '4px',
   },
-  textarea: {
+  notesInput: {
     width: '100%',
     fontSize: '12px',
-    resize: 'none',
-    border: '1px solid black', // Adds border to textarea
+    border: '1px solid black',
     padding: '4px',
   },
+  table: {
+    width: '100%',
+    borderCollapse: 'collapse',
+  },
+  tableCell: {
+    border: '1px solid black',
+    padding: '5px',
+    textAlign: 'center',
+  },
 };
-
