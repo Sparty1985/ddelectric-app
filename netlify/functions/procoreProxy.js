@@ -19,6 +19,7 @@ exports.handler = async function () {
             body: JSON.stringify(requestBody),
         });
 
+        // If response is not OK, log the error details
         if (!response.ok) {
             const errorDetails = await response.text(); // Fetch error details from response body
             console.error(`❌ Failed to fetch Procore token. Status: ${response.status}, Details: ${errorDetails}`);
@@ -31,6 +32,7 @@ exports.handler = async function () {
         // Parse the JSON response body to extract the token
         const data = await response.json();
         
+        // Validate that the access token is present in the response
         if (!data.access_token) {
             console.error("❌ Access token not received from Procore.");
             return {
@@ -39,16 +41,18 @@ exports.handler = async function () {
             };
         }
 
+        // Successfully fetched the token
         console.log("✅ Token received");
 
         // Return the token and the response
         return {
             statusCode: 200,
-            headers: { "Access-Control-Allow-Origin": "*" }, // Allow frontend to fetch this
+            headers: { "Access-Control-Allow-Origin": "*" },
             body: JSON.stringify(data),
         };
 
     } catch (error) {
+        // Handle any errors that occur during the function execution
         console.error("🚨 Error in Netlify Function:", error.message);
         return {
             statusCode: 500,
