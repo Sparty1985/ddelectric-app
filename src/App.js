@@ -8,7 +8,7 @@ function App() {
   
   // Procore OAuth Configuration
   const clientId = 'iIwfbLFJxuYA99-mlZDNWCB-kGB4jb3eEpdUB0InkkE';
-  const redirectUri = 'https://ddelectric-equip.netlify.app/redirect'; // Ensuring correct path
+  const redirectUri = 'https://ddelectric-equip.netlify.app'; // Ensuring correct path
   const authUrl = `https://app.procore.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
 
   // 🔴 Force Login if No Access Token
