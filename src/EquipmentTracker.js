@@ -99,35 +99,35 @@ export default function EquipmentTracker() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.header}>Equipment Tracking</h1>
-      <div style={styles.grid}>
+      <h1 style={styles.header}>Equipment Tracker</h1>
+      <div style={styles.list}>
         {equipment.map((eq) => (
-          <div key={eq.id} style={styles.card}>
-            <h2 style={styles.cardTitle}>{eq.name} ({eq.type})</h2>
-            <p>ID: {eq.id}</p>
-            
-            <label>Location:</label>
-            <select
-              value={eq.location}
-              onChange={(e) => updateEquipment(eq.id, "location", e.target.value)}
-              style={styles.select}
-            >
-              {locations.map((loc) => (
-                <option key={loc} value={loc}>{loc}</option>
-              ))}
-            </select>
-
-            <label>Assigned To:</label>
-            <select
-              value={eq.assignedTo}
-              onChange={(e) => updateEquipment(eq.id, "assignedTo", e.target.value)}
-              style={styles.select}
-            >
-              <option value="">Unassigned</option>
-              {employees.map((emp) => (
-                <option key={emp} value={emp}>{emp}</option>
-              ))}
-            </select>
+          <div key={eq.id} style={styles.item}>
+            <div style={styles.itemHeader}>
+              <span style={styles.itemName}>{eq.name} ({eq.type})</span>
+              <span style={styles.itemID}>ID: {eq.id}</span>
+            </div>
+            <div style={styles.selectContainer}>
+              <select
+                value={eq.location}
+                onChange={(e) => updateEquipment(eq.id, "location", e.target.value)}
+                style={styles.select}
+              >
+                {locations.map((loc) => (
+                  <option key={loc} value={loc}>{loc}</option>
+                ))}
+              </select>
+              <select
+                value={eq.assignedTo}
+                onChange={(e) => updateEquipment(eq.id, "assignedTo", e.target.value)}
+                style={styles.select}
+              >
+                <option value="">Unassigned</option>
+                {employees.map((emp) => (
+                  <option key={emp} value={emp}>{emp}</option>
+                ))}
+              </select>
+            </div>
           </div>
         ))}
       </div>
@@ -135,41 +135,58 @@ export default function EquipmentTracker() {
   );
 }
 
-// Styles
+// Styles optimized for mobile readability
 const styles = {
   container: {
-    padding: '20px',
+    padding: '10px',
     fontFamily: 'Arial, sans-serif',
-    maxWidth: '900px',
-    margin: 'auto'
+    maxWidth: '600px',
+    margin: 'auto',
   },
   header: {
     textAlign: 'center',
-    fontSize: '24px',
+    fontSize: '22px',
     fontWeight: 'bold',
-    marginBottom: '20px'
+    marginBottom: '10px',
   },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '15px'
-  },
-  card: {
-    backgroundColor: '#FFFFFF',
-    padding: '15px',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+  list: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    gap: '10px',
   },
-  cardTitle: {
-    fontSize: '18px',
+  item: {
+    backgroundColor: '#FFFFFF',
+    padding: '10px',
+    borderRadius: '6px',
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  itemHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    fontSize: '14px',
     fontWeight: 'bold',
-    marginBottom: '10px'
+  },
+  itemName: {
+    fontSize: '14px',
+    fontWeight: 'bold',
+  },
+  itemID: {
+    fontSize: '12px',
+    color: '#666',
+  },
+  selectContainer: {
+    display: 'flex',
+    gap: '8px',
+    marginTop: '6px',
   },
   select: {
-    marginTop: '5px',
-    padding: '5px',
-    fontSize: '14px'
-  }
+    flex: 1,
+    padding: '6px',
+    fontSize: '14px',
+    borderRadius: '4px',
+    border: '1px solid #ccc',
+  },
 };
