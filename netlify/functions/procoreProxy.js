@@ -13,7 +13,7 @@ exports.handler = async function () {
         };
 
         // Send POST request to fetch the token
-        const response = await fetch("https://login.procore.com/oauth/token", {
+        const response = await fetch("https://api.procore.com/oauth/token", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(requestBody),
@@ -44,7 +44,6 @@ exports.handler = async function () {
         // Successfully fetched the token
         console.log("✅ Token received");
 
-        // Return the token and the response
         return {
             statusCode: 200,
             headers: { "Access-Control-Allow-Origin": "*" },
@@ -53,7 +52,7 @@ exports.handler = async function () {
 
     } catch (error) {
         // Handle any errors that occur during the function execution
-        console.error("🚨 Error in Netlify Function:", error.message);
+        console.error("🚨 Error in Netlify Function:", error);
         return {
             statusCode: 500,
             body: JSON.stringify({ error: error.message }),
