@@ -37,12 +37,12 @@ exports.handler = async function () {
             console.error("❌ Access token not received from Procore.");
             return {
                 statusCode: 500,
-                body: JSON.stringify({ error: "Access token not received from Procore" }),
+                body: JSON.stringify({ error: "Access token not received from Procore", details: data }),
             };
         }
 
         // Successfully fetched the token
-        console.log("✅ Token received:", data.access_token);
+        console.log("✅ Token received");
 
         // Return the token and the response
         return {
