@@ -74,24 +74,28 @@ function App() {
           </div>
 
           
-        {/* Weather Widget */}
-        {weather && (
-          <div style={styles.weatherBox}>
-            <h3>Current Weather</h3>
-            <p><strong>{weather.city}</strong></p>
-            <p>Temperature: {weather.temp}°F</p>
-            <p>Precipitation: {weather.precip}%</p>
-          </div>
-        )}
-      </div>
+       {/* Weather Widget */}
+          {weather && (
+            <div style={styles.weatherBox}>
+              <h3>Current Weather</h3>
+              <p><strong>{weather.city}</strong></p>
+              <p>Temperature: {weather.temp}°F</p>
+              <p>Precipitation: {weather.precip}%</p>
+            </div>
+          )}
+        </div>
 
-      {/* Equipment Tracker Section */}
-      <div id="equipment-section">
-        <EquipmentTracker />
-      </div>
-    </div>
+        {/* Equipment Tracker Section */}
+        <div id="equipment-section">
+          <EquipmentTracker />
+        </div>
+
+      </div> 
+    </Router>
   );
 }
+
+
 
 // Styles
 const styles = {
@@ -110,7 +114,7 @@ const styles = {
     alignItems: 'center',
   },
   loginButton: {
-    backgroundColor: '#E67E22',
+    backgroundColor: '#E67E22', // Professional muted orange
     border: 'none',
     color: '#FFF',
     padding: '10px 20px',
