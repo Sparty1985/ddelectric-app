@@ -154,6 +154,7 @@ export default function EquipmentTracker() {
                   <th>Description</th>
                   <th>Location</th>
                   <th>Employee</th>
+                  <th>Notes</th>
                 </tr>
               </thead>
               <tbody>
@@ -185,19 +186,51 @@ export default function EquipmentTracker() {
     ))}
   </select>
 </td>
-                  </tr>
+<td>{eq.notes}</td>                 
+    </tr>
                 ))}
               </tbody>
             </table>
           ) : (
             <div style={styles.grid}>
-              {groupedEquipment[type].map((eq) => (
-                <div key={eq.id} style={styles.card}>
-                  <h2 style={styles.cardTitle}>{eq.name}</h2>
-                  <span style={styles.equipmentID}>{eq.id}</span>
-                </div>
-              ))}
-            </div>
+  {groupedEquipment[type].map((eq) => (
+    <div key={eq.id} style={styles.card}>
+      <h2 style={styles.cardTitle}>{eq.name}</h2>
+      <span style={styles.equipmentID}>{eq.id}</span>
+
+      <label>Location:</label>
+      <select
+        value={eq.location}
+        onChange={(e) => updateEquipment(eq.id, "location", e.target.value)}
+        style={styles.select}
+      >
+        <option value="">Select Location</option>
+        {locations.map((loc) => (
+          <option key={loc} value={loc}>{loc}</option>
+        ))}
+      </select>
+
+      <label>Employee:</label>
+      <select
+        value={eq.employee}
+        onChange={(e) => updateEquipment(eq.id, "employee", e.target.value)}
+        style={styles.select}
+      >
+        <option value="">Unassigned</option>
+        {employees.map((emp) => (
+          <option key={emp} value={emp}>{emp}</option>
+        ))}
+      </select>
+
+      <label>Notes:</label>
+      <textarea
+        value={eq.notes}
+        onChange={(e) => updateEquipment(eq.id, "notes", e.target.value)}
+        style={styles.textarea}
+      />
+    </div>
+  ))}
+</div>
           )}
         </div>
       ))}
@@ -332,4 +365,12 @@ const styles = {
     border: "1px solid black",
     padding: "6px",
   },
+  textarea: {
+  width: "100%",
+  height: "60px",
+  fontSize: "14px",
+  border: "1px solid black",
+  borderRadius: "6px",
+  padding: "6px",
+},
 };
