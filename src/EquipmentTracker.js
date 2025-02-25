@@ -35,7 +35,7 @@ export default function EquipmentTracker() {
           name: data.name || "",
           type: data.type || "Uncategorized",
           location: data.location || "",
-          employee: data.assignedTo || "",
+          assignedTo: data.assignedTo || "",
           notes: data.notes || "",
         };
       });
@@ -161,8 +161,30 @@ export default function EquipmentTracker() {
                   <tr key={eq.id}>
                     <td>{eq.id}</td>
                     <td>{eq.name}</td>
-                    <td>{eq.location}</td>
-                    <td>{eq.assignedTo || "Unassigned"}</td>
+                    <td>
+  <select
+    value={eq.location}
+    onChange={(e) => updateEquipment(eq.id, "location", e.target.value)}
+    style={styles.select}
+  >
+    <option value="">Select Location</option>
+    {locations.map((loc) => (
+      <option key={loc} value={loc}>{loc}</option>
+    ))}
+  </select>
+</td>
+                    <td>
+  <select
+    value={eq.assignedTo}
+    onChange={(e) => updateEquipment(eq.id, "assignedTo", e.target.value)}
+    style={styles.select}
+  >
+    <option value="">Unassigned</option>
+    {employees.map((emp) => (
+      <option key={emp} value={emp}>{emp}</option>
+    ))}
+  </select>
+</td>
                   </tr>
                 ))}
               </tbody>
@@ -220,7 +242,7 @@ export default function EquipmentTracker() {
 }
 
 const styles = {
-  container: { padding: "20px", textAlign: "center" },
+  container: { padding: "20px", maxWidth: "1000px", margin: "auto", textAlign: "center" },
   header: { fontSize: "24px", fontWeight: "bold" },
   searchInput: { width: "100%", padding: "10px", marginBottom: "20px" },
   toggleButton: { marginBottom: "20px" },
