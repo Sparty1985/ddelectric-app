@@ -220,25 +220,27 @@ const styles = {
     boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
     display: "flex",
     flexDirection: "column",
+    position: "relative",
+  },
+  cardHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   cardTitle: {
     fontSize: "14px",
     fontWeight: "bold",
+  },
+  equipmentID: {
+    fontSize: "12px",
+    fontWeight: "bold",
+    color: "#555",
+    alignSelf: "flex-start",
   },
   select: {
     width: "100%",
     fontSize: "12px",
     border: "1px solid black",
     padding: "4px",
-  },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-    border: "1px solid black",
-  },
-  tableCell: {
-    border: "1px solid black",
-    padding: "5px",
-    textAlign: "center",
   },
 };
