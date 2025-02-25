@@ -241,15 +241,95 @@ export default function EquipmentTracker() {
   );
 }
 
+// Styles
 const styles = {
-  container: { padding: "20px", maxWidth: "1000px", margin: "auto", textAlign: "center" },
-  header: { fontSize: "24px", fontWeight: "bold" },
-  searchInput: { width: "100%", padding: "10px", marginBottom: "20px" },
-  toggleButton: { marginBottom: "20px" },
-  sectionHeader: { fontSize: "20px", fontWeight: "bold", marginBottom: "10px" },
-  table: { width: "100%", borderCollapse: "collapse", textAlign: "center" },
-  grid: { display: "flex", flexWrap: "wrap", justifyContent: "center" },
-  card: { border: "1px solid black", padding: "10px", margin: "5px" },
-  editButton: { padding: "10px", marginTop: "20px" },
-  formContainer: { marginTop: "20px" },
+  container: {
+    padding: "20px",
+    fontFamily: "Arial, sans-serif",
+    maxWidth: "1000px",
+    margin: "auto",
+    textAlign: "center",
+  },
+  header: {
+    fontSize: "24px",
+    fontWeight: "bold",
+    marginBottom: "20px",
+  },
+  searchInput: {
+    width: "100%",
+    padding: "10px",
+    fontSize: "16px",
+    border: "1px solid black",
+    borderRadius: "6px",
+    marginBottom: "20px",
+  },
+  toggleButton: {
+    display: "block",
+    margin: "10px auto",
+    padding: "10px 15px",
+    fontSize: "16px",
+    backgroundColor: "#E67E22",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+  },
+  section: {
+    marginBottom: "40px",
+  },
+  sectionHeader: {
+    fontSize: "20px",
+    fontWeight: "bold",
+    marginTop: "30px",
+    paddingBottom: "5px",
+    borderBottom: "2px solid black",
+    textAlign: "center",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+    border: "1px solid black",
+    marginTop: "10px",
+    textAlign: "center",
+  },
+  tableCell: {
+    border: "1px solid black",
+    padding: "10px",
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+    gap: "15px",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  card: {
+    backgroundColor: "#FFFFFF",
+    padding: "15px",
+    borderRadius: "8px",
+    border: "1px solid black",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+    textAlign: "center",
+  },
+  cardHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "10px",
+  },
+  cardTitle: {
+    fontSize: "16px",
+    fontWeight: "bold",
+  },
+  equipmentID: {
+    fontSize: "14px",
+    fontWeight: "bold",
+    color: "gray",
+  },
+  select: {
+    width: "100%",
+    fontSize: "14px",
+    border: "1px solid black",
+    padding: "6px",
+  },
 };
