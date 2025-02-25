@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "./firebaseConfig";
-import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
+import { collection, getDocs, updateDoc, doc, setDoc } from "firebase/firestore";
 
 export default function EquipmentTracker() {
   const [equipment, setEquipment] = useState([]);
@@ -8,21 +8,28 @@ export default function EquipmentTracker() {
   const [employees, setEmployees] = useState([]);
   const [viewMode, setViewMode] = useState("list");
   const [searchQuery, setSearchQuery] = useState("");
+  const [password, setPassword] = useState("");
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [formData, setFormData] = useState({
+    id: "",
+    name: "",
+    type: "",
+    location: "",
+    employee: "",
+    notes: "",
+  });
 
   // Fetch equipment, locations, and employees from Firebase
   useEffect(() => {
     async function fetchData() {
-      // Equipment Data
       const eqSnapshot = await getDocs(collection(db, "equipment"));
       const eqList = eqSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setEquipment(eqList);
 
-      // Locations Data
       const locSnapshot = await getDocs(collection(db, "locations"));
       const locList = locSnapshot.docs.map((doc) => doc.data().name);
       setLocations(locList);
 
-      // Employees Data
       const empSnapshot = await getDocs(collection(db, "employees"));
       const empList = empSnapshot.docs.map((doc) => doc.data().name);
       setEmployees(empList);
@@ -35,6 +42,31 @@ export default function EquipmentTracker() {
       prev.map((eq) => (eq.id === id ? { ...eq, [field]: value } : eq))
     );
     await updateDoc(doc(db, "equipment", id), { [field]: value });
+  };
+
+  // Handle adding or updating equipment
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    const { id, name, type, location, employee, notes } = formData;
+
+    if (!id || !name || !type) {
+      alert("ID, Name, and Type are required!");
+      return;
+    }
+
+    try {
+      await setDoc(doc(db, "equipment", id), {
+        name,
+        type,
+        location,
+        employee,
+        notes,
+      });
+      alert("Equipment added/updated successfully!");
+      window.location.reload(); // Refresh data after update
+    } catch (error) {
+      alert("Error updating equipment: " + error.message);
+    }
   };
 
   // Filter equipment based on search input
@@ -88,159 +120,116 @@ export default function EquipmentTracker() {
       </button>
 
       {/* Render Equipment by Type */}
-      {viewMode === "list"
-        ? Object.keys(groupedEquipment).map((type) => (
-            <div key={type} id={type}>
-              <h2 style={styles.sectionHeader}>{type}</h2>
-              <div style={styles.list}>
-                {groupedEquipment[type].map((eq) => (
-                  <div key={eq.id} style={styles.card}>
-                    <h2 style={styles.cardTitle}>{eq.name}</h2>
-                    <label>Location:</label>
-                    <select
-                      value={eq.location}
-                      onChange={(e) => updateEquipment(eq.id, "location", e.target.value)}
-                      style={styles.select}
-                    >
-                      <option value="">Select Location</option>
-                      {locations.map((loc) => (
-                        <option key={loc} value={loc}>{loc}</option>
-                      ))}
-                    </select>
-                    <label>Employee:</label>
-                    <select
-                      value={eq.employee}
-                      onChange={(e) => updateEquipment(eq.id, "employee", e.target.value)}
-                      style={styles.select}
-                    >
-                      <option value="">Unassigned</option>
-                      {employees.map((emp) => (
-                        <option key={emp} value={emp}>{emp}</option>
-                      ))}
-                    </select>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))
-        : Object.keys(groupedEquipment).map((type) => (
-            <div key={type} id={type}>
-              <h2 style={styles.sectionHeader}>{type}</h2>
-              <table style={styles.table}>
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Description</th>
-                    <th>Location</th>
-                    <th>Employee</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {groupedEquipment[type].map((eq) => (
-                    <tr key={eq.id}>
-                      <td>{eq.id}</td>
-                      <td>{eq.name}</td>
-                      <td>{eq.location}</td>
-                      <td>{eq.employee || "Unassigned"}</td>
-                    </tr>
+      {Object.keys(groupedEquipment).map((type) => (
+        <div key={type} id={type}>
+          <h2 style={styles.sectionHeader}>{type}</h2>
+          <div style={styles.list}>
+            {groupedEquipment[type].map((eq) => (
+              <div key={eq.id} style={styles.card}>
+                <div style={styles.cardHeader}>
+                  <h2 style={styles.cardTitle}>{eq.name}</h2>
+                  <span style={styles.equipmentID}>{eq.id}</span>
+                </div>
+                <label>Location:</label>
+                <select
+                  value={eq.location}
+                  onChange={(e) => updateEquipment(eq.id, "location", e.target.value)}
+                  style={styles.select}
+                >
+                  <option value="">Select Location</option>
+                  {locations.map((loc) => (
+                    <option key={loc} value={loc}>{loc}</option>
                   ))}
-                </tbody>
-              </table>
-            </div>
-          ))}
+                </select>
+                <label>Employee:</label>
+                <select
+                  value={eq.employee}
+                  onChange={(e) => updateEquipment(eq.id, "employee", e.target.value)}
+                  style={styles.select}
+                >
+                  <option value="">Unassigned</option>
+                  {employees.map((emp) => (
+                    <option key={emp} value={emp}>{emp}</option>
+                  ))}
+                </select>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {/* Password-Protected Equipment Management Form */}
+      <div style={styles.formContainer}>
+        {!isAuthorized ? (
+          <div>
+            <h2>Enter Password to Manage Equipment</h2>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={styles.passwordInput}
+            />
+            <button
+              onClick={() => {
+                if (password === "Gogetter@6608") setIsAuthorized(true);
+                else alert("Incorrect Password!");
+              }}
+              style={styles.toggleButton}
+            >
+              Submit
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleFormSubmit}>
+            <h2>Manage Equipment</h2>
+            <input
+              type="text"
+              placeholder="Equipment ID"
+              value={formData.id}
+              onChange={(e) => setFormData({ ...formData, id: e.target.value })}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Name"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Type"
+              value={formData.type}
+              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              required
+            />
+            <select
+              value={formData.location}
+              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            >
+              <option value="">Select Location</option>
+              {locations.map((loc) => (
+                <option key={loc} value={loc}>{loc}</option>
+              ))}
+            </select>
+            <select
+              value={formData.employee}
+              onChange={(e) => setFormData({ ...formData, employee: e.target.value })}
+            >
+              <option value="">Unassigned</option>
+              {employees.map((emp) => (
+                <option key={emp} value={emp}>{emp}</option>
+              ))}
+            </select>
+            <textarea
+              placeholder="Notes"
+              value={formData.notes}
+              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+            />
+            <button type="submit" style={styles.toggleButton}>Save Equipment</button>
+          </form>
+        )}
+      </div>
     </div>
   );
 }
-
-// Styles
-const styles = {
-  container: {
-    padding: "10px",
-    fontFamily: "Arial, sans-serif",
-    maxWidth: "900px",
-    margin: "auto",
-  },
-  header: {
-    textAlign: "center",
-    fontSize: "22px",
-    fontWeight: "bold",
-    marginBottom: "10px",
-  },
-  searchInput: {
-    width: "100%",
-    padding: "8px",
-    fontSize: "14px",
-    border: "1px solid black",
-    borderRadius: "4px",
-    marginBottom: "10px",
-  },
-  categoryLinks: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "10px",
-    justifyContent: "center",
-    marginBottom: "10px",
-  },
-  categoryLink: {
-    padding: "8px",
-    background: "#E67E22",
-    color: "#FFF",
-    borderRadius: "4px",
-    textDecoration: "none",
-    cursor: "pointer",
-  },
-  toggleButton: {
-    display: "block",
-    margin: "10px auto",
-    padding: "8px 12px",
-    fontSize: "14px",
-    backgroundColor: "#E67E22",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  sectionHeader: {
-    fontSize: "18px",
-    fontWeight: "bold",
-    marginTop: "20px",
-    paddingBottom: "5px",
-    borderBottom: "2px solid black",
-  },
-  list: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-  },
-  card: {
-    backgroundColor: "#FFFFFF",
-    padding: "10px",
-    borderRadius: "6px",
-    border: "1px solid black",
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
-    display: "flex",
-    flexDirection: "column",
-    position: "relative",
-  },
-  cardHeader: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  cardTitle: {
-    fontSize: "14px",
-    fontWeight: "bold",
-  },
-  equipmentID: {
-    fontSize: "12px",
-    fontWeight: "bold",
-    color: "#555",
-    alignSelf: "flex-start",
-  },
-  select: {
-    width: "100%",
-    fontSize: "12px",
-    border: "1px solid black",
-    padding: "4px",
-  },
-};
