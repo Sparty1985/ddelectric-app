@@ -212,8 +212,8 @@ export default function EquipmentTracker() {
 
       <label>Employee:</label>
       <select
-        value={eq.employee}
-        onChange={(e) => updateEquipment(eq.id, "employee", e.target.value)}
+        value={eq.assignedTo}
+        onChange={(e) => updateEquipment(eq.id, "assignedTo", e.target.value)}
         style={styles.select}
       >
         <option value="">Unassigned</option>
