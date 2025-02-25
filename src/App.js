@@ -77,13 +77,37 @@ function App() {
           
        {/* Weather Widget */}
           {weather && (
-            <div style={styles.weatherBox}>
-              <h3>Current Weather</h3>
-              <p><strong>{weather.city}</strong></p>
-              <p>Temperature: {weather.temp}°F</p>
-              <p>Precipitation: {weather.precip}%</p>
-            </div>
-          )}
+  <div style={styles.weatherContainer}>
+    {/* Left: Radar */}
+    <div style={styles.radarContainer}>
+      <h4>Live Radar</h4>
+      <img src={weather.radarUrl} alt="Radar Map" style={styles.radarImage} />
+    </div>
+
+    {/* Center: Current Weather */}
+    <div style={styles.weatherBox}>
+      <h3>Current Weather</h3>
+      <p><strong>{weather.city}</strong></p>
+      <p>Temperature: {weather.temp}°F</p>
+      <p>Precipitation: {weather.precip}</p>
+    </div>
+
+    {/* Right: 5-Day Forecast */}
+    <div style={styles.forecastContainer}>
+      <h4>5-Day Forecast</h4>
+      <div style={styles.forecastGrid}>
+        {weather.forecast.map((day, index) => (
+          <div key={index} style={styles.forecastCard}>
+            <p>{day.date}</p>
+            <img src={day.icon} alt={day.weather} style={styles.weatherIcon} />
+            <p>{day.temp}°F</p>
+            <p>{day.weather}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
         </div>
 
         {/* Equipment Tracker Section */}
@@ -152,7 +176,58 @@ const styles = {
     background: '#FFFFFF',
     borderRadius: '8px',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  }
+  },
+  weatherContainer: {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  background: "#FFFFFF",
+  borderRadius: "8px",
+  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+  padding: "15px",
+  marginTop: "20px",
+},
+
+radarContainer: {
+  flex: 1,
+  textAlign: "center",
+},
+
+radarImage: {
+  width: "100%",
+  maxWidth: "250px",
+  borderRadius: "8px",
+},
+
+weatherBox: {
+  flex: 1,
+  textAlign: "center",
+},
+
+forecastContainer: {
+  flex: 1,
+  textAlign: "center",
+},
+
+forecastGrid: {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+},
+
+forecastCard: {
+  background: "#F8F9FA",
+  padding: "8px",
+  borderRadius: "6px",
+  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+  textAlign: "center",
+  width: "120px",
+  marginBottom: "5px",
+},
+weatherIcon: {
+  width: "40px",
+  height: "40px",
+}
 };
 
 export default App;
