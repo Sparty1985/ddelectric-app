@@ -46,9 +46,17 @@ export default function EquipmentTracker() {
   };
 
   // Filter equipment based on search input
-  const filteredEquipment = equipment.filter((eq) =>
-    eq.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredEquipment = equipment.filter((eq) => {
+  const searchLower = searchQuery.toLowerCase();
+  return (
+    eq.id.toLowerCase().includes(searchLower) ||
+    (eq.name && eq.name.toLowerCase().includes(searchLower)) ||
+    (eq.location && eq.location.toLowerCase().includes(searchLower)) ||
+    (eq.assignedTo && eq.assignedTo.toLowerCase().includes(searchLower)) ||
+    (eq.notes && eq.notes.toLowerCase().includes(searchLower)) ||
+    (eq.type && eq.type.toLowerCase().includes(searchLower))
   );
+});
 
   // Group equipment by type
   const groupedEquipment = filteredEquipment.reduce((acc, eq) => {
