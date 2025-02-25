@@ -78,13 +78,7 @@ function App() {
        {/* Weather Widget */}
           {weather && (
   <div style={styles.weatherContainer}>
-    {/* Left: Radar */}
-    <div style={styles.radarContainer}>
-      <h4>Live Radar</h4>
-      <img src={weather.radarUrl} alt="Radar Map" style={styles.radarImage} />
-    </div>
-
-    {/* Center: Current Weather */}
+    {/* Current Weather */}
     <div style={styles.weatherBox}>
       <h3>Current Weather</h3>
       <p><strong>{weather.city}</strong></p>
@@ -92,19 +86,16 @@ function App() {
       <p>Precipitation: {weather.precip}</p>
     </div>
 
-    {/* Right: 5-Day Forecast */}
+    {/* 5-Day Forecast Below */}
     <div style={styles.forecastContainer}>
-      <h4>5-Day Forecast</h4>
-      <div style={styles.forecastGrid}>
-        {weather.forecast.map((day, index) => (
-          <div key={index} style={styles.forecastCard}>
-            <p>{day.date}</p>
-            <img src={day.icon} alt={day.weather} style={styles.weatherIcon} />
-            <p>{day.temp}°F</p>
-            <p>{day.weather}</p>
-          </div>
-        ))}
-      </div>
+      {weather.forecast.map((day, index) => (
+        <div key={index} style={styles.forecastCard}>
+          <p>{day.date.split("-").slice(1).join("/")}</p>
+          <img src={day.icon} alt={day.weather} style={styles.weatherIcon} />
+          <p>{day.temp}°F</p>
+          <p style={styles.forecastText}>{day.weather}</p>
+        </div>
+      ))}
     </div>
   </div>
 )}
@@ -177,56 +168,49 @@ const styles = {
     borderRadius: '8px',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
   },
-  weatherContainer: {
+weatherContainer: {
   display: "flex",
-  justifyContent: "space-between",
+  flexDirection: "column",
   alignItems: "center",
-  background: "#FFFFFF",
+  background: "#1E293B", // Darker background
+  color: "#FFF", // White text
   borderRadius: "8px",
-  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.2)",
   padding: "15px",
   marginTop: "20px",
 },
 
-radarContainer: {
-  flex: 1,
-  textAlign: "center",
-},
-
-radarImage: {
-  width: "100%",
-  maxWidth: "250px",
-  borderRadius: "8px",
-},
-
 weatherBox: {
-  flex: 1,
   textAlign: "center",
+  marginBottom: "10px",
 },
 
 forecastContainer: {
-  flex: 1,
-  textAlign: "center",
-},
-
-forecastGrid: {
   display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
+  justifyContent: "center",
+  gap: "8px",
+  flexWrap: "wrap",
+  padding: "10px",
 },
 
 forecastCard: {
-  background: "#F8F9FA",
-  padding: "8px",
+  background: "#334155", // Slightly darker for contrast
+  padding: "5px",
   borderRadius: "6px",
-  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
   textAlign: "center",
-  width: "120px",
-  marginBottom: "5px",
+  width: "80px",
+  fontSize: "12px",
 },
+
 weatherIcon: {
-  width: "40px",
-  height: "40px",
+  width: "30px",
+  height: "30px",
+},
+
+forecastText: {
+  fontSize: "10px",
+  fontWeight: "bold",
 }
 };
 
