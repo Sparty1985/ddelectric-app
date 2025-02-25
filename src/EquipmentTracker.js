@@ -11,10 +11,21 @@ export default function EquipmentTracker() {
 
   // Fetch equipment, locations, and employees from Firebase
   useEffect(() => {
-    async function fetchData() {
-      const eqSnapshot = await getDocs(collection(db, "equipment"));
-      const eqList = eqSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setEquipment(eqList);
+  async function fetchData() {
+    // Equipment Data
+    const eqSnapshot = await getDocs(collection(db, "equipment"));
+    const eqList = eqSnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        name: data.name || "",
+        type: data.type || "Uncategorized",
+        location: data.location || "",
+        employee: data.assignedTo || "", // Ensure assignedTo is being fetched properly
+        notes: data.notes || "",
+      };
+    });
+    setEquipment(eqList);
 
       const locSnapshot = await getDocs(collection(db, "locations"));
       const locList = locSnapshot.docs.map((doc) => doc.data().name);
