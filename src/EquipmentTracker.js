@@ -1,19 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { db } from "./firebaseConfig"; 
+import { db } from "./firebaseConfig";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 
 export default function EquipmentTracker() {
   const [equipment, setEquipment] = useState([]);
+  const [locations, setLocations] = useState([]);  // Fetch from Firebase
+  const [employees, setEmployees] = useState([]);  // Fetch from Firebase
   const [viewMode, setViewMode] = useState("list");
 
-  // 🔹 Fetch Equipment from Firestore
+  // 🔹 Fetch Equipment, Locations, and Employees from Firebase
   useEffect(() => {
-    async function fetchEquipment() {
-      const querySnapshot = await getDocs(collection(db, "equipment"));
-      const equipmentList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setEquipment(equipmentList);
+    async function fetchData() {
+      try {
+        // Fetch Equipment
+        const equipmentSnapshot = await getDocs(collection(db, "equipment"));
+        setEquipment(equipmentSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+
+        // Fetch Locations
+        const locationsSnapshot = await getDocs(collection(db, "locations"));
+        setLocations(locationsSnapshot.docs.map(doc => doc.data().name));  // Ensure it's an array of names
+
+        // Fetch Employees
+        const employeesSnapshot = await getDocs(collection(db, "employees"));
+        setEmployees(employeesSnapshot.docs.map(doc => doc.data().name));  // Ensure it's an array of names
+      } catch (error) {
+        console.error("❌ Error fetching data:", error);
+      }
     }
-    fetchEquipment();
+    fetchData();
   }, []);
 
   // 🔹 Update Firestore when changes are made
@@ -37,19 +51,40 @@ export default function EquipmentTracker() {
           {equipment.map(eq => (
             <div key={eq.id} style={styles.card}>
               <h2 style={styles.cardTitle}>{eq.name} ({eq.type})</h2>
+
+              {/* 🔹 Location Dropdown (Pulled from Firebase) */}
               <label>Location:</label>
-              <select value={eq.location} onChange={(e) => updateEquipment(eq.id, "location", e.target.value)} style={styles.select}>
-                {["Shop", "Warehouse", "Site"].map(loc => (
-                  <option key={loc} value={loc}>{loc}</option>
-                ))}
+              <select 
+                value={eq.location} 
+                onChange={(e) => updateEquipment(eq.id, "location", e.target.value)} 
+                style={styles.select}
+              >
+                {locations.length > 0 ? (
+                  locations.map(loc => (
+                    <option key={loc} value={loc}>{loc}</option>
+                  ))
+                ) : (
+                  <option value="">Loading...</option>
+                )}
               </select>
+
+              {/* 🔹 Assigned To Dropdown (Pulled from Firebase) */}
               <label>Assigned To:</label>
-              <select value={eq.assignedTo} onChange={(e) => updateEquipment(eq.id, "assignedTo", e.target.value)} style={styles.select}>
+              <select 
+                value={eq.assignedTo} 
+                onChange={(e) => updateEquipment(eq.id, "assignedTo", e.target.value)} 
+                style={styles.select}
+              >
                 <option value="">Unassigned</option>
-                {["Nathan Sumner", "Tommy Reyling", "Shop Truck"].map(emp => (
-                  <option key={emp} value={emp}>{emp}</option>
-                ))}
+                {employees.length > 0 ? (
+                  employees.map(emp => (
+                    <option key={emp} value={emp}>{emp}</option>
+                  ))
+                ) : (
+                  <option value="">Loading...</option>
+                )}
               </select>
+
               <label>Notes:</label>
               <input
                 type="text"
@@ -96,7 +131,6 @@ const styles = {
   toggleButton: { display: "block", margin: "10px auto", padding: "8px 12px", fontSize: "14px", backgroundColor: "#E67E22", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" },
   list: { display: "flex", flexDirection: "column", gap: "10px" },
   card: { backgroundColor: "#FFFFFF", padding: "10px", borderRadius: "6px", border: "1px solid black", boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)", display: "flex", flexDirection: "column" },
-  cardTitle: { fontSize: "14px", fontWeight: "bold" },
   select: { width: "100%", fontSize: "12px", border: "1px solid black", padding: "4px" },
   notesInput: { width: "100%", fontSize: "12px", border: "1px solid black", padding: "4px" },
   table: { width: "100%", borderCollapse: "collapse" },
