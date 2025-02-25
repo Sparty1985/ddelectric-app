@@ -4,8 +4,8 @@ import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 
 export default function EquipmentTracker() {
   const [equipment, setEquipment] = useState([]);
-  const [locations, setLocations] = useState([]);  // Fetch from Firebase
-  const [employees, setEmployees] = useState([]);  // Fetch from Firebase
+  const [locations, setLocations] = useState([]);  
+  const [employees, setEmployees] = useState([]);  
   const [viewMode, setViewMode] = useState("list");
 
   // 🔹 Fetch Equipment, Locations, and Employees from Firebase
@@ -18,11 +18,11 @@ export default function EquipmentTracker() {
 
         // Fetch Locations
         const locationsSnapshot = await getDocs(collection(db, "locations"));
-        setLocations(locationsSnapshot.docs.map(doc => doc.data().name));  // Ensure it's an array of names
+        setLocations(locationsSnapshot.docs.map(doc => doc.data().name));
 
         // Fetch Employees
         const employeesSnapshot = await getDocs(collection(db, "employees"));
-        setEmployees(employeesSnapshot.docs.map(doc => doc.data().name));  // Ensure it's an array of names
+        setEmployees(employeesSnapshot.docs.map(doc => doc.data().name));
       } catch (error) {
         console.error("❌ Error fetching data:", error);
       }
@@ -52,7 +52,7 @@ export default function EquipmentTracker() {
             <div key={eq.id} style={styles.card}>
               <h2 style={styles.cardTitle}>{eq.name} ({eq.type})</h2>
 
-              {/* 🔹 Location Dropdown (Pulled from Firebase) */}
+              {/* 🔹 Location Dropdown */}
               <label>Location:</label>
               <select 
                 value={eq.location} 
@@ -68,11 +68,11 @@ export default function EquipmentTracker() {
                 )}
               </select>
 
-              {/* 🔹 Assigned To Dropdown (Pulled from Firebase) */}
-              <label>Assigned To:</label>
+              {/* 🔹 Employee Dropdown (Was "Assigned To") */}
+              <label>Employee:</label>
               <select 
-                value={eq.assignedTo} 
-                onChange={(e) => updateEquipment(eq.id, "assignedTo", e.target.value)} 
+                value={eq.employee} 
+                onChange={(e) => updateEquipment(eq.id, "employee", e.target.value)} 
                 style={styles.select}
               >
                 <option value="">Unassigned</option>
@@ -103,7 +103,7 @@ export default function EquipmentTracker() {
               <th>ID</th>
               <th>Description</th>
               <th>Location</th>
-              <th>Assigned</th>
+              <th>Employee</th>
               <th>Notes</th>
             </tr>
           </thead>
@@ -113,7 +113,7 @@ export default function EquipmentTracker() {
                 <td>{eq.id}</td>
                 <td>{eq.name} ({eq.type})</td>
                 <td>{eq.location}</td>
-                <td>{eq.assignedTo || "Unassigned"}</td>
+                <td>{eq.employee || "Unassigned"}</td>
                 <td>{eq.notes}</td>
               </tr>
             ))}
