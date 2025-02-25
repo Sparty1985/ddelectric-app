@@ -218,3 +218,16 @@ export default function EquipmentTracker() {
     </div>
   );
 }
+
+const styles = {
+  container: { padding: "20px", textAlign: "center" },
+  header: { fontSize: "24px", fontWeight: "bold" },
+  searchInput: { width: "100%", padding: "10px", marginBottom: "20px" },
+  toggleButton: { marginBottom: "20px" },
+  sectionHeader: { fontSize: "20px", fontWeight: "bold", marginBottom: "10px" },
+  table: { width: "100%", borderCollapse: "collapse", textAlign: "center" },
+  grid: { display: "flex", flexWrap: "wrap", justifyContent: "center" },
+  card: { border: "1px solid black", padding: "10px", margin: "5px" },
+  editButton: { padding: "10px", marginTop: "20px" },
+  formContainer: { marginTop: "20px" },
+};
