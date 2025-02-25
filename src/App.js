@@ -56,7 +56,7 @@ function App() {
     <Router>
       <div style={styles.app}>
         <header style={styles.header}>
-          <h1>D&D Electric Equipment</h1>
+          <h1>D&D Electric</h1>
           <button onClick={redirectToProcoreAuth} style={styles.loginButton}>
             Login with Procore
           </button>
